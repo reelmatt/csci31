@@ -9,4 +9,4 @@ making several modifications to the starter code, and adding some files of your 
 4. This server delivers files in its own home directory - the directory where the code itself resides.  Modify the server code so that the files requested in the URL are served from an `htdocs` directory inside this project. You'll do this by adding the `htdocs` directory, and then changing how the value of the `filepath` variable is determined.
 5. Add a static HTML file to the project for the server to serve. It's fine to add some images, CSS or other assets as well, if you like.
 6. Push your code back up to github, and deploy it to DO
-7. Submit the URL of your server and your repo to Assignment 2 in Canvas
+7. Submit the URL to the page served by your server on DO, and the URL to your Github repo to Assignment 2 in Canvas
