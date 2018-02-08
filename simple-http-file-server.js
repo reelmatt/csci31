@@ -1,4 +1,4 @@
-//simple (and incomplete) http server 
+//simple (and incomplete) http server
 var http = require('http');
 var path = require('path');
 var url = require('url');
@@ -32,7 +32,7 @@ http.createServer((req,res) => {
    fs.stat(filepath, (err) => {
      if (err){
        // handle case of file not found
-       if (err.code == 'EOENT'){
+       if (err.code == 'ENOENT'){
          res.writeHead(404, {"Content-Type": "text/plain"});
          res.end("404 Not Found\n");
          console.log("EOENT Error")
