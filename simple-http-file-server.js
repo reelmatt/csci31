@@ -29,7 +29,7 @@ http.createServer((req,res) => {
     contentType = mimeTypes[extname] || 'application/octet-stream';
 
    // see if this file exists
-   fs.stat(filepath, (err) => {
+   fs.stat(filepath, (err, stat) => {
      if (err){
        // handle case of file not found
        if (err.code == 'ENOENT'){
@@ -46,6 +46,20 @@ http.createServer((req,res) => {
        console.log(err);
        return;
      }
+     if(stat.isDirectory()) {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        var dir = "";
+
+        fs.readdir(filepath, function(err, items) {
+            items.forEach(item => {
+                dir += `${item}\n`;
+            });
+            res.write(dir);
+            log.info(`Delivered Directory Listing:\n${dir}`);
+            res.end();
+        });
+        return;
+      }
      // try to read the file from disk
      fs.readFile(filepath, (err, data) => {
        if(err){
@@ -62,4 +76,6 @@ http.createServer((req,res) => {
      });
    });
 
-}).listen(8080);
+}).listen(8080).on('listening', () => {
+  console.log("Server is listening");
+});

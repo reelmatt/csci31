@@ -1,6 +1,6 @@
 # Assignment 2: Node modules and packages
 
-Start with out the version of the simple HTTP server example from class that's included in this project.  You'll be
+Start out with the version of the simple HTTP server example from class that's included in this project.  You'll be
 making several modifications to the starter code, and adding some files of your own.
 
 1. Add a `package.json` to manage dependencies in your project
