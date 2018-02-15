@@ -70,6 +70,7 @@ http.createServer((req,res) => {
          return;
        }
        // send the data to the browser via the response
+       res.writeHead(200, {"Content-Type": contentType})
        res.write(data);
        res.end();
        console.log("delivered %s", pathname);
