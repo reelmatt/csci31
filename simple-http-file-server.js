@@ -55,7 +55,7 @@ http.createServer((req,res) => {
                 dir += `${item}\n`;
             });
             res.write(dir);
-            log.info(`Delivered Directory Listing:\n${dir}`);
+            console.log(`Delivered Directory Listing:\n${dir}`);
             res.end();
         });
         return;
