@@ -1,82 +1,79 @@
-//simple (and incomplete) http server
-var http = require('http');
-var path = require('path');
-var url = require('url');
-var fs = require('fs');
+// start by navigating to the folder, and type 'node ../simple-http-file-server'
+// access the app from you browser at http://localhost:8080/ (add any arbitrary path)
 
-http.createServer((req,res) => {
-  // get the filepath part of the url requested
-  const { pathname }  = url.parse(req.url);
-  console.log("pathname is %s", pathname);
+const http = require('http');
+const url = require('url');
+const path = require('path');
+const fs = require('fs');
 
-  // get the actual system filepath for this
-   var filepath = path.join(process.cwd(), pathname);
-   console.log("filepath is %s", filepath);
+var server = http.createServer((req, res) => {
+	console.log(req.url);
 
-   // extract the filename extension
-   var extname = String(path.extname(filepath)).toLowerCase();
+	const mimeTypes = {
+    'html' : "text/html",
+    'css'  : "text/css",
+    'js'   : "text/javascript",
+    'png'  : "image/png",
+    'jpg'  : "image/jpg"
+  };
 
-  // set up mimetypes and associated filename extensions
-   var contentType = 'text/html';
-    var mimeTypes = {
-        '.html': 'text/html',
-        '.css': 'text/css',
-        '.js': 'application/javascript',
-        '.json': 'application/json',
-        '.png': 'image/png'
-    };
-    // set mimetype if it is known
-    contentType = mimeTypes[extname] || 'application/octet-stream';
+  // parse the URL into its component parts
+	const parsedUrl = url.parse(req.url, true);
+	console.log(parsedUrl);
+  // extract the pathname and query properties
+	const { pathname, query } = parsedUrl;
 
-   // see if this file exists
-   fs.stat(filepath, (err, stat) => {
-     if (err){
-       // handle case of file not found
-       if (err.code == 'ENOENT'){
-         res.writeHead(404, {"Content-Type": "text/plain"});
-         res.end("404 Not Found\n");
-         console.log("EOENT Error")
-         console.log(err);
-         return;
-       }
-       // if an error other than EOENT, handle that here
-       res.writeHead(500, {"Content-Type": "text/plain"});
-       res.end("500 Error\n");
-       console.log("500 error")
-       console.log(err);
-       return;
-     }
-     if(stat.isDirectory()) {
-        res.writeHead(200, {"Content-Type": "text/plain"});
-        var dir = "";
+	// output absolute path info
+	console.log('__dirname is %s', __dirname);
+	console.log('cwd is %s', process.cwd());
 
-        fs.readdir(filepath, function(err, items) {
-            items.forEach(item => {
-                dir += `${item}\n`;
-            });
-            res.write(dir);
-            console.log(`Delivered Directory Listing:\n${dir}`);
-            res.end();
-        });
-        return;
-      }
-     // try to read the file from disk
-     fs.readFile(filepath, (err, data) => {
-       if(err){
-         res.writeHead(500, {"Content-Type": "text/plain"});
-         res.end("500 Error\n");
-         console.log("Read file error")
-         console.log(err);
-         return;
-       }
-       // send the data to the browser via the response
-       res.writeHead(200, {"Content-Type": contentType})
-       res.write(data);
-       res.end();
-       console.log("delivered %s", pathname);
-     });
-   });
+  var contentType = 'text/plain';
 
-}).listen(8080).on('listening', () => {
-  console.log("Server is listening");
+   // Extract the filename extension
+   //  then set the mimetype if it is known
+  var extname = String(path.extname(filepath)).toLowerCase();
+  contentType = mimeTypes[extname] || contentType;
+
+	// Create an absolute path to the requested file.
+	// Assume the server was started from the webroot
+	const absolute_path_to_file = path.join(__dirname, pathname);
+	console.log('absolute_path_to_file is %s', absolute_path_to_file);
+
+	fs.readFile(absolute_path_to_file, (err, data) => {
+		  if (err) {
+	      console.log(err);
+	      if (err.code == 'ENOENT'){
+	        // file does not exist - we should return a 404 status code
+					console.log('404 error getting ' + pathname);
+					res.writeHead(404, {"Content-Type": "text/plain"});
+					res.end('404: Page Not Found!');
+	      } else if (err.code == 'EISDIR'){
+	        // this is actually a directory - we should create a directory listing
+					console.log('directory listing ' + pathname);
+					fs.readdir(absolute_path_to_file, (err, files)=>{
+						if (err) {
+							res.writeHead(500, {"Content-Type": "text/plain"});
+							res.end('Server Error 500');
+						}
+						let s = '<b>Directory Listing</b><br>';
+						files.forEach((i)=>{
+							s += (i + "<br>");
+						});
+						res.writeHead(200, {"Content-Type": "text/plain"});
+						res.end(s, 'utf8');
+					});
+	      }
+	    } else {
+		    // If we get to here, 'data' should contain the contents of the file
+				res.writeHead(200, contentType);
+				res.end(data, 'binary', ()=>{
+					console.log("file delivered: " + pathname);
+				});
+		}
+	});
+});
+
+var port = 8080;
+server.listen(port, () => {
+  console.log("Listening on " + port);
 });
