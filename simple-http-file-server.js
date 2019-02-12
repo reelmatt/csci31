@@ -28,12 +28,11 @@ var server = http.createServer((req, res) => {
 	console.log('cwd is %s', process.cwd());
 
   var contentType = 'text/plain';
-
-   // Extract the filename extension
-   //  then set the mimetype if it is known
-  var extname = String(path.extname(filepath)).toLowerCase();
+	// Extract the filename extension
+	//  then set the mimetype if it is known
+  var extname = String(path.extname(pathname)).toLowerCase();
   contentType = mimeTypes[extname] || contentType;
-
+	
 	// Create an absolute path to the requested file.
 	// Assume the server was started from the webroot
 	const absolute_path_to_file = path.join(__dirname, pathname);
