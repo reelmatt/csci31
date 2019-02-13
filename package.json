@@ -1,0 +1,22 @@
+{
+  "name": "assignment-2-reelmatt",
+  "version": "1.0.0",
+  "description": "My first package, created for assignment 2 of CSCI e31",
+  "main": "fileExt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarvardDCENode/assignment-2-reelmatt.git"
+  },
+  "author": "Matthew Thomas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HarvardDCENode/assignment-2-reelmatt/issues"
+  },
+  "homepage": "https://github.com/HarvardDCENode/assignment-2-reelmatt#readme",
+  "dependencies": {
+    "log-util": "^1.2.0"
+  }
+}

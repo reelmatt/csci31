@@ -5,78 +5,103 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
-const ext = require('./fileExt');
+const ext = require('./extensions');
+const log = require('log-util');
+
+const errorCodes = {
+	'404' : "404: Page Not Found!",
+	'500' : "Server Error 500",
+};
 
 var server = http.createServer((req, res) => {
-	console.log(req.url);
+  log.debug(req.url);
 
-  // parse the URL into its component parts
-	const parsedUrl = url.parse(req.url, true);
-	console.log(parsedUrl);
+  const parsedUrl = url.parse(req.url, true);	// parse URL into component parts
+  log.debug(parsedUrl);
 
-	// extract the pathname and query properties
-	const { pathname, query } = parsedUrl;
+  const { pathname, query } = parsedUrl;			// extract pathname & query properties
 
-	// output absolute path info
-	console.log('__dirname is %s', __dirname);
-	console.log('cwd is %s', process.cwd());
+  log.debug('__dirname is ' + __dirname);		  // output absolute path info
+  log.debug('cwd is ' + process.cwd());		  	// output current working dir
 
-	// Extract the filename extension
-	//  then set the mimetype if it is known
-  //var extname = String(path.extname(pathname)).toLowerCase();
-	var contentType = ext(pathname);
+	ext.logQuery(query);										  	// Log the querystring
 
-	console.log("returned contentType is " + contentType);
-
-	// Create an absolute path to the requested file.
-	// Assume the server was started from the webroot
-	const absolute_path_to_file = path.join(__dirname, pathname);
-	console.log('absolute_path_to_file is %s', absolute_path_to_file);
-
-	fs.readFile(absolute_path_to_file, (err, data) => {
-		  if (err) {
-	      console.log(err);
-	      if (err.code == 'ENOENT'){
-	        // file does not exist - we should return a 404 status code
-					console.log('404 error getting ' + pathname);
-					//res.writeHead(404, {"Content-Type": "text/plain"});
-					checkContentType(contentType, 404);
-					res.end('404: Page Not Found!');
-	      } else if (err.code == 'EISDIR'){
-	        // this is actually a directory - we should create a directory listing
-					console.log('directory listing ' + pathname);
-					fs.readdir(absolute_path_to_file, (err, files)=>{
-						if (err) {
-							checkContentType(contentType, 500);
-							//res.writeHead(500, {"Content-Type": "text/plain"});
-							res.end('Server Error 500');
-						}
-						let s = '<b>Directory Listing</b><br>';
-						files.forEach((i)=>{
-							s += (i + "<br>");
-						});
-						checkContentType(contentType, 200);
-						//res.writeHead(200, {"Content-Type": "text/html"});
-						res.end(s, 'utf8');
-					});
-	      }
-	    } else {
-		    // If we get to here, 'data' should contain the contents of the file
-				//res.writeHead(200, contentType);
-				checkContentType(contentType, 200);
-				res.end(data, 'binary', ()=>{
-					console.log("file delivered: " + pathname);
-				});
-		}
-	});
+	processPath(res, pathname);									// process the path (file or dir)
 });
 
-function checkContentType(type, status) {
-		if(type == undefined) {
-			res.writeHead(status);
-		} else {
-			res.writeHead(status, {"Content-Type": type});
+
+/* Take a requested path and generate response for file, dir, or error */
+function processPath(response, pathname)
+{
+	// Create absolute path to requested file. Assume server started from webroot
+	const absolute_path = path.join(__dirname, pathname);
+	log.debug('absolute_path is ', absolute_path);
+
+	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
+
+	//Read in file requested from URL
+  fs.readFile(absolute_path, (err, data) => {
+    //check error cases first
+    if (err)
+		{
+      log.error(err);
+
+			if (err.code == 'ENOENT') 						//file doesn't exist, return 404
+			{
+        log.warn('404 error getting ' + pathname);
+				outputHeader(response, contentType, 404);
+				response.end(errorCodes[404]);
+      }
+			else if (err.code == 'EISDIR') 				//is dir, create dir listing
+			{
+				getDir(absolute_path, pathname, response, contentType);
+      }
+    }
+    //when no errors, data should contain contents of file
+    else
+		{
+      outputHeader(response, contentType, 200);
+      response.end(data, 'binary', () => {
+        log.info("file delivered: " + pathname);
+      });
+    }
+  });
+}
+
+/*
+ * Try opening the given path as a directory. Output listing of files if
+ * path is a directory, error 500 if a problem occurs.
+ */
+function getDir(absolute_path, pathname, response, contentType)
+{
+	log.warn('directory listing ' + pathname);
+
+	//read the files in the directory
+	fs.readdir(absolute_path, (err, files) => {
+		if (err)
+		{
+			outputHeader(res, contentType, 500);
+			response.end(errorCodes[500]);
 		}
+		else
+		{
+			outputHeader(response, contentType, 200);
+			response.end(ext.getListing(files), 'utf8');
+		}
+	});
+
+}
+
+/*
+ * Output the correct headers depending on type and status. If the
+ * contentType is undefined, do not include one in the headers.
+ */
+function outputHeader(response, type, status)
+{
+  if (type)
+		response.writeHead(status, {"Content-Type": type});
+	else
+		response.writeHead(status);
 }
 
 var port = 8080;
