@@ -21,23 +21,23 @@ var server = http.createServer((req, res) => {
 	log.debug(parsedUrl);						//log that object
 	log.debug('__dirname is %s', __dirname);	//output absolute path info
 	log.debug('cwd is %s', process.cwd());
-	
+
 	const { pathname, query } = parsedUrl;		//extract pathname & query properties
 
-	// calls to my extension module 
+	// calls to my extension module
 	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
 	ext.logQuery(query);						//log the query key:value pairs
-	
+
 	// Create an absolute path to the requested file. Assume server started from root.
 	const absolute_path = path.join(__dirname, pathname);
 	log.debug('absolute_path is ' + absolute_path);
 
 	fs.readFile(absolute_path, (err, data) => {
 		//check error cases first
-		if (err) 
+		if (err)
 		{
 			log.error(err);
-	      
+
 			if (err.code == 'ENOENT')			//file doesn't exist, return 404
 			{
 				log.warn('404 error getting ' + pathname);
@@ -46,11 +46,11 @@ var server = http.createServer((req, res) => {
 				res.writeHead(404, contentType);		//works, but might be undefined
 
 				res.end('404: Page Not Found!');
-			} 
+			}
 			else if (err.code == 'EISDIR')		//is dir, create dir listing
-			{	
+			{
 				log.warn('directory listing ' + pathname);
-				
+
 				fs.readdir(absolute_path, (err, files)=>{
 					if (err)
 					{
@@ -58,14 +58,14 @@ var server = http.createServer((req, res) => {
 						res.writeHead(500, contentType);		//works, might be undef
 						res.end('Server Error 500');
 					}
-					
+
 					//let s = ext.getListing(files);			//outputs as plain text
-					
+
 					let s = '<b>Directory Listing</b><br>';		//this outputs as HTML
 					files.forEach((i)=>{
-						s += (i + "<br>");
+						s += ("<a href=\"" + i + "\">" + i + "</a><br>");
 					});
-					
+
 					//outputHeader(res, contentType, 200);		//not working
 					res.writeHead(200, contentType);			//works, might be undef
 					res.end(s, 'utf8');

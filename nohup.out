@@ -1,0 +1,357 @@
+Listening on 8080
+[16:32:53.617] /htdocs/ldskjf
+[16:32:53.619] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/htdocs/ldskjf',
+  path: '/htdocs/ldskjf',
+  href: '/htdocs/ldskjf' }
+[16:32:53.621] __dirname is %s /root/assignment-2-reelmatt
+[16:32:53.621] cwd is %s /root/assignment-2-reelmatt
+[16:32:53.621] absolute_path is /root/assignment-2-reelmatt/htdocs/ldskjf
+[16:32:53.623] { Error: ENOENT: no such file or directory, open '/root/assignment-2-reelmatt/htdocs/ldskjf'
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/root/assignment-2-reelmatt/htdocs/ldskjf' }
+[16:32:53.623] 404 error getting /htdocs/ldskjf
+[16:32:56.312] /
+[16:32:56.312] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:32:56.313] __dirname is %s /root/assignment-2-reelmatt
+[16:32:56.313] cwd is %s /root/assignment-2-reelmatt
+[16:32:56.313] absolute_path is /root/assignment-2-reelmatt/
+[16:32:56.314] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:32:56.315] directory listing /
+[16:33:02.886] /
+[16:33:02.887] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:33:02.888] __dirname is %s /root/assignment-2-reelmatt
+[16:33:02.888] cwd is %s /root/assignment-2-reelmatt
+[16:33:02.889] absolute_path is /root/assignment-2-reelmatt/
+[16:33:02.889] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:33:02.889] directory listing /
+Listening on 8080
+[16:39:29.495] /
+[16:39:29.497] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:39:29.501] __dirname is %s /root/assignment-2-reelmatt
+[16:39:29.501] cwd is %s /root/assignment-2-reelmatt
+[16:39:29.502] absolute_path is /root/assignment-2-reelmatt/
+[16:39:29.504] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:39:29.504] directory listing /
+[16:39:31.304] /simple-http-file-server.js.bak
+[16:39:31.304] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js.bak',
+  path: '/simple-http-file-server.js.bak',
+  href: '/simple-http-file-server.js.bak' }
+[16:39:31.305] __dirname is %s /root/assignment-2-reelmatt
+[16:39:31.305] cwd is %s /root/assignment-2-reelmatt
+[16:39:31.305] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js.bak
+[16:39:31.306] file delivered: /simple-http-file-server.js.bak
+[16:39:31.341] /favicon.ico
+[16:39:31.341] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/favicon.ico',
+  path: '/favicon.ico',
+  href: '/favicon.ico' }
+[16:39:31.342] __dirname is %s /root/assignment-2-reelmatt
+[16:39:31.342] cwd is %s /root/assignment-2-reelmatt
+[16:39:31.342] absolute_path is /root/assignment-2-reelmatt/favicon.ico
+[16:39:31.342] { Error: ENOENT: no such file or directory, open '/root/assignment-2-reelmatt/favicon.ico'
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/root/assignment-2-reelmatt/favicon.ico' }
+[16:39:31.342] 404 error getting /favicon.ico
+[16:39:34.317] /
+[16:39:34.318] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:39:34.319] __dirname is %s /root/assignment-2-reelmatt
+[16:39:34.319] cwd is %s /root/assignment-2-reelmatt
+[16:39:34.319] absolute_path is /root/assignment-2-reelmatt/
+[16:39:34.319] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:39:34.320] directory listing /
+[16:39:37.447] /simple-http-file-server.js.bak
+[16:39:37.447] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js.bak',
+  path: '/simple-http-file-server.js.bak',
+  href: '/simple-http-file-server.js.bak' }
+[16:39:37.448] __dirname is %s /root/assignment-2-reelmatt
+[16:39:37.448] cwd is %s /root/assignment-2-reelmatt
+[16:39:37.448] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js.bak
+[16:39:37.449] file delivered: /simple-http-file-server.js.bak
+[16:39:49.852] /
+[16:39:49.852] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:39:49.852] __dirname is %s /root/assignment-2-reelmatt
+[16:39:49.852] cwd is %s /root/assignment-2-reelmatt
+[16:39:49.853] absolute_path is /root/assignment-2-reelmatt/
+[16:39:49.853] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:39:49.853] directory listing /
+[16:39:50.016] /favicon.ico
+[16:39:50.016] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/favicon.ico',
+  path: '/favicon.ico',
+  href: '/favicon.ico' }
+[16:39:50.016] __dirname is %s /root/assignment-2-reelmatt
+[16:39:50.017] cwd is %s /root/assignment-2-reelmatt
+[16:39:50.017] absolute_path is /root/assignment-2-reelmatt/favicon.ico
+[16:39:50.017] { Error: ENOENT: no such file or directory, open '/root/assignment-2-reelmatt/favicon.ico'
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/root/assignment-2-reelmatt/favicon.ico' }
+[16:39:50.017] 404 error getting /favicon.ico
+[16:39:51.873] /simple-http-file-server.js.bak
+[16:39:51.873] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js.bak',
+  path: '/simple-http-file-server.js.bak',
+  href: '/simple-http-file-server.js.bak' }
+[16:39:51.873] __dirname is %s /root/assignment-2-reelmatt
+[16:39:51.873] cwd is %s /root/assignment-2-reelmatt
+[16:39:51.874] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js.bak
+[16:39:51.874] file delivered: /simple-http-file-server.js.bak
+[16:40:04.364] /nohup.out
+[16:40:04.364] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/nohup.out',
+  path: '/nohup.out',
+  href: '/nohup.out' }
+[16:40:04.365] __dirname is %s /root/assignment-2-reelmatt
+[16:40:04.365] cwd is %s /root/assignment-2-reelmatt
+[16:40:04.365] absolute_path is /root/assignment-2-reelmatt/nohup.out
+[16:40:04.365] file delivered: /nohup.out
+[16:40:04.401] /favicon.ico
+[16:40:04.401] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/favicon.ico',
+  path: '/favicon.ico',
+  href: '/favicon.ico' }
+[16:40:04.402] __dirname is %s /root/assignment-2-reelmatt
+[16:40:04.403] cwd is %s /root/assignment-2-reelmatt
+[16:40:04.405] absolute_path is /root/assignment-2-reelmatt/favicon.ico
+[16:40:04.406] { Error: ENOENT: no such file or directory, open '/root/assignment-2-reelmatt/favicon.ico'
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/root/assignment-2-reelmatt/favicon.ico' }
+[16:40:04.406] 404 error getting /favicon.ico
+[16:41:02.391] /simple-http-file-server.js.bak
+[16:41:02.402] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js.bak',
+  path: '/simple-http-file-server.js.bak',
+  href: '/simple-http-file-server.js.bak' }
+[16:41:02.403] __dirname is %s /root/assignment-2-reelmatt
+[16:41:02.403] cwd is %s /root/assignment-2-reelmatt
+[16:41:02.403] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js.bak
+[16:41:02.403] file delivered: /simple-http-file-server.js.bak
+[16:41:07.416] /
+[16:41:07.418] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/',
+  path: '/',
+  href: '/' }
+[16:41:07.419] __dirname is %s /root/assignment-2-reelmatt
+[16:41:07.419] cwd is %s /root/assignment-2-reelmatt
+[16:41:07.419] absolute_path is /root/assignment-2-reelmatt/
+[16:41:07.419] { Error: EISDIR: illegal operation on a directory, read errno: -21, code: 'EISDIR', syscall: 'read' }
+[16:41:07.420] directory listing /
+[16:41:07.455] /favicon.ico
+[16:41:07.455] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/favicon.ico',
+  path: '/favicon.ico',
+  href: '/favicon.ico' }
+[16:41:07.456] __dirname is %s /root/assignment-2-reelmatt
+[16:41:07.456] cwd is %s /root/assignment-2-reelmatt
+[16:41:07.456] absolute_path is /root/assignment-2-reelmatt/favicon.ico
+[16:41:07.456] { Error: ENOENT: no such file or directory, open '/root/assignment-2-reelmatt/favicon.ico'
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/root/assignment-2-reelmatt/favicon.ico' }
+[16:41:07.456] 404 error getting /favicon.ico
+[16:41:09.003] /simple-http-file-server.js.bak
+[16:41:09.003] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js.bak',
+  path: '/simple-http-file-server.js.bak',
+  href: '/simple-http-file-server.js.bak' }
+[16:41:09.003] __dirname is %s /root/assignment-2-reelmatt
+[16:41:09.003] cwd is %s /root/assignment-2-reelmatt
+[16:41:09.003] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js.bak
+[16:41:09.004] file delivered: /simple-http-file-server.js.bak
+[16:41:11.355] /simple-http-file-server.js
+[16:41:11.356] Url {
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: null,
+  search: '',
+  query: {},
+  pathname: '/simple-http-file-server.js',
+  path: '/simple-http-file-server.js',
+  href: '/simple-http-file-server.js' }
+[16:41:11.356] __dirname is %s /root/assignment-2-reelmatt
+[16:41:11.357] cwd is %s /root/assignment-2-reelmatt
+[16:41:11.357] absolute_path is /root/assignment-2-reelmatt/simple-http-file-server.js
+[16:41:11.357] file delivered: /simple-http-file-server.js
