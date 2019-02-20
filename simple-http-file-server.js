@@ -14,19 +14,20 @@ const errorCodes = {
 };
 
 var server = http.createServer((req, res) => {
-  log.debug(req.url);
+	log.debug(req.url);
 
-  const parsedUrl = url.parse(req.url, true);	// parse URL into component parts
-  log.debug(parsedUrl);
+	const parsedUrl = url.parse(req.url, true);	// parse URL into component parts
+	log.debug(parsedUrl);
 
-  const { pathname, query } = parsedUrl;			// extract pathname & query properties
+	const { pathname, query } = parsedUrl;		// extract pathname & query props
 
-  log.debug('__dirname is ' + __dirname);		  // output absolute path info
-  log.debug('cwd is ' + process.cwd());		  	// output current working dir
+	log.debug('__dirname is ' + __dirname);		// log absolute path info
+	log.debug('cwd is ' + process.cwd());		// log current working dir
 
-	ext.logQuery(query);										  	// Log the querystring
+	/* call to my extension module */
+	ext.logQuery(query);						// Log the query key:value pairs
 
-	processPath(res, pathname);									// process the path (file or dir)
+	processPath(res, pathname);					// process the path (file or dir)
 });
 
 
@@ -37,35 +38,36 @@ function processPath(response, pathname)
 	const absolute_path = path.join(__dirname, pathname);
 	log.debug('absolute_path is ', absolute_path);
 
+	/* call to my extension module */
 	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
 
 	//Read in file requested from URL
-  fs.readFile(absolute_path, (err, data) => {
-    //check error cases first
-    if (err)
+	fs.readFile(absolute_path, (err, data) => {
+		//check error cases first
+		if (err)
 		{
-      log.error(err);
+			log.error(err);
 
-			if (err.code == 'ENOENT') 						//file doesn't exist, return 404
+			if (err.code == 'ENOENT')			//file doesn't exist, return 404
 			{
-        log.warn('404 error getting ' + pathname);
+				log.warn('404 error getting ' + pathname);
 				outputHeader(response, contentType, 404);
 				response.end(errorCodes[404]);
-      }
-			else if (err.code == 'EISDIR') 				//is dir, create dir listing
+			}
+			else if (err.code == 'EISDIR')		//is dir, create dir listing
 			{
 				getDir(absolute_path, pathname, response, contentType);
-      }
-    }
-    //when no errors, data should contain contents of file
-    else
+			}
+    	}
+		//when no errors, data should contain contents of file
+		else
 		{
-      outputHeader(response, contentType, 200);
-      response.end(data, 'binary', () => {
-        log.info("file delivered: " + pathname);
-      });
-    }
-  });
+			outputHeader(response, contentType, 200);
+			response.end(data, 'binary', () => {
+				log.info("file delivered: " + pathname);
+      		});
+		}
+	});
 }
 
 /*
@@ -86,10 +88,11 @@ function getDir(absolute_path, pathname, response, contentType)
 		else
 		{
 			outputHeader(response, contentType, 200);
+			
+			/* call to my extension module */
 			response.end(ext.getListing(files), 'utf8');
 		}
 	});
-
 }
 
 /*
@@ -98,7 +101,7 @@ function getDir(absolute_path, pathname, response, contentType)
  */
 function outputHeader(response, type, status)
 {
-  if (type)
+	if (type)
 		response.writeHead(status, {"Content-Type": type});
 	else
 		response.writeHead(status);
@@ -106,5 +109,5 @@ function outputHeader(response, type, status)
 
 var port = 8080;
 server.listen(port, () => {
-  console.log("Listening on " + port);
+	console.log("Listening on " + port);
 });
