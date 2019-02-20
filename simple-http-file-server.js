@@ -16,6 +16,70 @@ const errorCodes = {
 var server = http.createServer((req, res) => {
 	log.debug(req.url);
 
+	const parsedUrl = url.parse(req.url, true);	//parse URL to component parts
+	log.debug(parsedUrl);						//log that object
+	log.debug('__dirname is %s', __dirname);	//output absolute path info
+	log.debug('cwd is %s', process.cwd());
+	
+	const { pathname, query } = parsedUrl;		//extract pathname & query properties
+
+	// call to my extension module 
+	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
+
+	// call to my extension module
+	ext.logQuery(query);						// Log the query key:value pairs
+	
+	// Create an absolute path to the requested file.
+	// Assume the server was started from the webroot
+	const absolute_path = path.join(__dirname, pathname);
+	log.debug('absolute_path is ' + absolute_path);
+
+	fs.readFile(absolute_path, (err, data) => {
+		//check error cases first
+		if (err) 
+		{
+			console.log(err);
+	      
+			if (err.code == 'ENOENT')			//file doesn't exist, return 404
+			{
+				console.log('404 error getting ' + pathname);
+				res.writeHead(404, contentType);
+				res.end('404: Page Not Found!');
+			} 
+			else if (err.code == 'EISDIR')		//is dir, create dir listing
+			{
+				console.log('directory listing ' + pathname);
+				
+				fs.readdir(absolute_path, (err, files)=>{
+					if (err) {
+						res.writeHead(500, contentType);
+						res.end('Server Error 500');
+					}
+					let s = '<b>Directory Listing</b><br>';
+					files.forEach((i)=>{
+						s += (i + "<br>");
+					});
+					
+					res.writeHead(200, contentType);
+					res.end(s, 'utf8');
+				});
+			}
+		}
+		// If we get to here, 'data' should contain the contents of the file
+		else
+		{
+			res.writeHead(200, contentType);
+			res.end(data, 'binary', ()=>{
+				console.log("file delivered: " + pathname);
+			});
+		}
+	});
+});
+
+/*
+var server = http.createServer((req, res) => {
+	log.debug(req.url);
+
 	const parsedUrl = url.parse(req.url, true);	// parse URL into component parts
 	log.debug(parsedUrl);
 
@@ -24,21 +88,22 @@ var server = http.createServer((req, res) => {
 	log.debug('__dirname is ' + __dirname);		// log absolute path info
 	log.debug('cwd is ' + process.cwd());		// log current working dir
 
-	/* call to my extension module */
+	// call to my extension module
 	ext.logQuery(query);						// Log the query key:value pairs
 
 	processPath(res, pathname);					// process the path (file or dir)
 });
-
+*/
 
 /* Take a requested path and generate response for file, dir, or error */
+/*
 function processPath(response, pathname)
 {
 	// Create absolute path to requested file. Assume server started from webroot
 	const absolute_path = path.join(__dirname, pathname);
 	log.debug('absolute_path is ', absolute_path);
 
-	/* call to my extension module */
+	// call to my extension module 
 	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
 
 	//Read in file requested from URL
@@ -69,11 +134,13 @@ function processPath(response, pathname)
 		}
 	});
 }
+*/
 
 /*
  * Try opening the given path as a directory. Output listing of files if
  * path is a directory, error 500 if a problem occurs.
  */
+ /*
 function getDir(absolute_path, pathname, response, contentType)
 {
 	log.warn('directory listing ' + pathname);
@@ -89,11 +156,11 @@ function getDir(absolute_path, pathname, response, contentType)
 		{
 			outputHeader(response, contentType, 200);
 			
-			/* call to my extension module */
+			// call to my extension module 
 			response.end(ext.getListing(files), 'utf8');
 		}
 	});
-}
+}*/
 
 /*
  * Output the correct headers depending on type and status. If the
