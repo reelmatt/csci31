@@ -14,6 +14,7 @@ const errorCodes = {
 };
 
 var server = http.createServer((req, res) => {
+	/* except for logging the query values, I use the 3rd-party log module*/
 	log.debug(req.url);
 
 	const parsedUrl = url.parse(req.url, true);	//parse URL to component parts
@@ -23,14 +24,11 @@ var server = http.createServer((req, res) => {
 	
 	const { pathname, query } = parsedUrl;		//extract pathname & query properties
 
-	// call to my extension module 
+	// calls to my extension module 
 	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
-
-	// call to my extension module
-	ext.logQuery(query);						// Log the query key:value pairs
+	ext.logQuery(query);						//log the query key:value pairs
 	
-	// Create an absolute path to the requested file.
-	// Assume the server was started from the webroot
+	// Create an absolute path to the requested file. Assume server started from root.
 	const absolute_path = path.join(__dirname, pathname);
 	log.debug('absolute_path is ' + absolute_path);
 
@@ -38,29 +36,38 @@ var server = http.createServer((req, res) => {
 		//check error cases first
 		if (err) 
 		{
-			console.log(err);
+			log.error(err);
 	      
 			if (err.code == 'ENOENT')			//file doesn't exist, return 404
 			{
-				console.log('404 error getting ' + pathname);
-				res.writeHead(404, contentType);
+				log.warn('404 error getting ' + pathname);
+
+				//outputHeader(res, contentType, 404);	//not working
+				res.writeHead(404, contentType);		//works, but might be undefined
+
 				res.end('404: Page Not Found!');
 			} 
 			else if (err.code == 'EISDIR')		//is dir, create dir listing
-			{
-				console.log('directory listing ' + pathname);
+			{	
+				log.warn('directory listing ' + pathname);
 				
 				fs.readdir(absolute_path, (err, files)=>{
-					if (err) {
-						res.writeHead(500, contentType);
+					if (err)
+					{
+						//outputHeader(res, contentType, 500);	//not working
+						res.writeHead(500, contentType);		//works, might be undef
 						res.end('Server Error 500');
 					}
-					let s = '<b>Directory Listing</b><br>';
+					
+					//let s = ext.getListing(files);			//outputs as plain text
+					
+					let s = '<b>Directory Listing</b><br>';		//this outputs as HTML
 					files.forEach((i)=>{
 						s += (i + "<br>");
 					});
 					
-					res.writeHead(200, contentType);
+					//outputHeader(res, contentType, 200);		//not working
+					res.writeHead(200, contentType);			//works, might be undef
 					res.end(s, 'utf8');
 				});
 			}
@@ -68,99 +75,14 @@ var server = http.createServer((req, res) => {
 		// If we get to here, 'data' should contain the contents of the file
 		else
 		{
-			res.writeHead(200, contentType);
+			//outputHeader(res, contentType, 200);				//not working
+			res.writeHead(200, contentType);					//works, might be undef
 			res.end(data, 'binary', ()=>{
-				console.log("file delivered: " + pathname);
+				log.info("file delivered: " + pathname);
 			});
 		}
 	});
 });
-
-/*
-var server = http.createServer((req, res) => {
-	log.debug(req.url);
-
-	const parsedUrl = url.parse(req.url, true);	// parse URL into component parts
-	log.debug(parsedUrl);
-
-	const { pathname, query } = parsedUrl;		// extract pathname & query props
-
-	log.debug('__dirname is ' + __dirname);		// log absolute path info
-	log.debug('cwd is ' + process.cwd());		// log current working dir
-
-	// call to my extension module
-	ext.logQuery(query);						// Log the query key:value pairs
-
-	processPath(res, pathname);					// process the path (file or dir)
-});
-*/
-
-/* Take a requested path and generate response for file, dir, or error */
-/*
-function processPath(response, pathname)
-{
-	// Create absolute path to requested file. Assume server started from webroot
-	const absolute_path = path.join(__dirname, pathname);
-	log.debug('absolute_path is ', absolute_path);
-
-	// call to my extension module 
-	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
-
-	//Read in file requested from URL
-	fs.readFile(absolute_path, (err, data) => {
-		//check error cases first
-		if (err)
-		{
-			log.error(err);
-
-			if (err.code == 'ENOENT')			//file doesn't exist, return 404
-			{
-				log.warn('404 error getting ' + pathname);
-				outputHeader(response, contentType, 404);
-				response.end(errorCodes[404]);
-			}
-			else if (err.code == 'EISDIR')		//is dir, create dir listing
-			{
-				getDir(absolute_path, pathname, response, contentType);
-			}
-    	}
-		//when no errors, data should contain contents of file
-		else
-		{
-			outputHeader(response, contentType, 200);
-			response.end(data, 'binary', () => {
-				log.info("file delivered: " + pathname);
-      		});
-		}
-	});
-}
-*/
-
-/*
- * Try opening the given path as a directory. Output listing of files if
- * path is a directory, error 500 if a problem occurs.
- */
- /*
-function getDir(absolute_path, pathname, response, contentType)
-{
-	log.warn('directory listing ' + pathname);
-
-	//read the files in the directory
-	fs.readdir(absolute_path, (err, files) => {
-		if (err)
-		{
-			outputHeader(res, contentType, 500);
-			response.end(errorCodes[500]);
-		}
-		else
-		{
-			outputHeader(response, contentType, 200);
-			
-			// call to my extension module 
-			response.end(ext.getListing(files), 'utf8');
-		}
-	});
-}*/
 
 /*
  * Output the correct headers depending on type and status. If the
