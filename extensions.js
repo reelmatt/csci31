@@ -25,8 +25,6 @@ var toExport = {
 	getListing: function(directory, files) {
 		var s = '<h1>Directory Listing</h1><div class="links">';
 		
-		console.log("in getListing, files is...");
-		console.log(files);
 		files.forEach((i) => {
 			s += ('<p><a href="' + path.join(directory, i) + '">' + i + '</a></p>');
 		});

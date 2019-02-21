@@ -38,11 +38,11 @@ var server = http.createServer((req, res) => {
 		{
 			log.error(err);
 
-			if (err.code == 'ENOENT')			//file doesn't exist, return 404
+			if (err.code == 'ENOENT')			//file doesn't exist
 			{
+				//log the offending file, and return a 404 page
 				log.warn('404 error getting ' + pathname);
-				outputHeader(res, contentType, 404);
-				res.end('404: Page Not Found!');
+				outputHeaders(res, contentType, 404);
 			}
 			else if (err.code == 'EISDIR')		//is dir, create dir listing
 			{
@@ -51,15 +51,15 @@ var server = http.createServer((req, res) => {
 				fs.readdir(absolute_path, (err, files)=>{
 					if (err)
 					{
-						outputHeader(res, contentType, 500);
-						res.end('Server Error 500');
+						outputHeaders(res, contentType, 500);
 					}
 					else
 					{
-						outputHeader(res, contentType, 200);
+						//get a listing of formatted links for each file in the dir
+						var s = ext.getListing(pathname, files);
 						
-						var s = ext.getListing(pathname, files) //get linked file listing
-						res.end(s, 'utf8');					
+						//display that listing
+						deliverContent(res, contentType, s, 'utf8', null);
 					}
 				});
 			}
@@ -67,24 +67,54 @@ var server = http.createServer((req, res) => {
 		// If we get to here, 'data' should contain the contents of the file
 		else
 		{
-			outputHeader(res, contentType, 200);
-			res.end(data, 'binary', ()=>{
-				log.info("file delivered: " + pathname);
-			});
+			deliverContent(res, contentType, data, 'binary', pathname);
 		}
 	});
 });
 
+
+/*
+ * When meeting criteria for a 200 response code, output a correct header
+ * and format the content of the page appropriately. Calls on outputHeader()
+ * and factors out response.end() code.
+ *
+ * This function keeps the assignment's original logging of the "file delivered"
+ * message.
+ */
+function deliverContent(response, contentType, data, encoding, path)
+{
+	outputHeaders(response, contentType, 200);		//output the correct header
+	
+	if (encoding === 'binary')						//aka, found a file to deliver
+	{
+		response.end(data, encoding, () =>{
+			log.info("file delivered: " + path);	//log the name of it
+		});
+	}
+	else
+	{
+		response.end(data, encoding);				//otherwise, just output data
+	}
+}
+
 /*
  * Output the correct headers depending on type and status. If the
  * contentType is undefined, do not include one in the headers.
+ *
+ * For status codes that have an error message, also write the end
+ * to the response, and included the defined error message. See the
+ * defined errorCodes array at the head of this file.
  */
-function outputHeader(response, type, status)
+function outputHeaders(response, type, status)
 {
 	if (type)
 		response.writeHead(status, {"Content-Type": type});
 	else
 		response.writeHead(status);
+	
+	//for error conditions, also output the response.end()
+	if (status === 404 || status === 500)
+		response.end(errorCodes[status]);
 }
 
 var port = 8080;
