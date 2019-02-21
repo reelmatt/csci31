@@ -28,8 +28,8 @@ var server = http.createServer((req, res) => {
 	var contentType = ext.getType(pathname);	//set mimetype (undefined if not known)
 	ext.logQuery(query);						//log the query key:value pairs
 
-	// Create an absolute path to the requested file. Assume server started from root.
-	const absolute_path = path.join(__dirname, pathname);
+	// Create an absolute path to the requested file. Assume server started from htdocs.
+	const absolute_path = path.join(__dirname, 'htdocs', pathname);
 	log.debug('absolute_path is ' + absolute_path);
 
 	fs.readFile(absolute_path, (err, data) => {
@@ -41,10 +41,7 @@ var server = http.createServer((req, res) => {
 			if (err.code == 'ENOENT')			//file doesn't exist, return 404
 			{
 				log.warn('404 error getting ' + pathname);
-
-				//outputHeader(res, contentType, 404);	//not working
-				res.writeHead(404, contentType);		//works, but might be undefined
-
+				outputHeader(res, contentType, 404);
 				res.end('404: Page Not Found!');
 			}
 			else if (err.code == 'EISDIR')		//is dir, create dir listing
@@ -54,29 +51,23 @@ var server = http.createServer((req, res) => {
 				fs.readdir(absolute_path, (err, files)=>{
 					if (err)
 					{
-						//outputHeader(res, contentType, 500);	//not working
-						res.writeHead(500, contentType);		//works, might be undef
+						outputHeader(res, contentType, 500);
 						res.end('Server Error 500');
 					}
-
-					//let s = ext.getListing(files);			//outputs as plain text
-
-					let s = '<b>Directory Listing</b><br>';		//this outputs as HTML
-					files.forEach((i)=>{
-						s += ("<a href=\"" + i + "\">" + i + "</a><br>");
-					});
-
-					//outputHeader(res, contentType, 200);		//not working
-					res.writeHead(200, contentType);			//works, might be undef
-					res.end(s, 'utf8');
+					else
+					{
+						outputHeader(res, contentType, 200);
+						
+						var s = ext.getListing(pathname, files) //get linked file listing
+						res.end(s, 'utf8');					
+					}
 				});
 			}
 		}
 		// If we get to here, 'data' should contain the contents of the file
 		else
 		{
-			//outputHeader(res, contentType, 200);				//not working
-			res.writeHead(200, contentType);					//works, might be undef
+			outputHeader(res, contentType, 200);
 			res.end(data, 'binary', ()=>{
 				log.info("file delivered: " + pathname);
 			});
