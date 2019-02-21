@@ -57,7 +57,7 @@ var server = http.createServer((req, res) => {
 					{
 						//get a listing of formatted links for each file in the dir
 						var s = ext.getListing(pathname, files);
-						
+		
 						//display that listing
 						deliverContent(res, contentType, s, 'utf8', null);
 					}

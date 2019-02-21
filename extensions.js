@@ -23,13 +23,12 @@ var toExport = {
 
 	/* Convert an array of FILES into paragraph-separated links */
 	getListing: function(directory, files) {
-		var s = '<h1>Directory Listing</h1><div class="links">';
+		var s = '<b>Directory Listing</b>';
 		
 		files.forEach((i) => {
 			s += ('<p><a href="' + path.join(directory, i) + '">' + i + '</a></p>');
 		});
 
-		s += "</div>"; //close it
 		return s;
 	},
 
