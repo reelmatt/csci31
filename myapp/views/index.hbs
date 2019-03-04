@@ -1,0 +1,24 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}! Use the form below to add details for a film you have recently
+seen. Be sure to add a rating so you remember if you liked it or not.</p>
+    <form method='GET' action='/film'>
+        <p><label>Film:
+            <input type='text' name='title'>
+        </label></p>
+        <p><label>Rating:
+            <input type='number' name='rating' max='5' min='0' size='5'>
+        </label></p>
+        <p><input type='submit' value='Log Film'></p>
+    </form>
+<p>Haven't seen a movie recently? Use the dropdown to see a list of selected films.</p>
+    <form method='GET'>
+        <p><label>List of popular films:
+            <select name='previously_seen'>
+                <option value='Star Wars'>Star Wars</option>
+                <option value='Jaws'>Jaws</option>
+                <option value='The Return of the King'>The Return of the King</option>
+                <option value='Good Will Hunting'>Good Will Hunting</option>
+                <option value='Oceans Eleven'>Ocean's Eleven</option>
+            </select>
+        </label></p>
+    </form>
