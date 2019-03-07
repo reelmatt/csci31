@@ -1,2 +1,6 @@
 <h1>{{title}}</h1>
-<p>Rating: {{rating}}</p>
+<h2><a href='/'>Home</a></h2>
+
+<h1>{{omdb.Title}}</h1>
+<a href='http://imdb.com/title/{{omdb.imdbID}}'><img src='{{omdb.Poster}}'></a>
+<p>Rating: {{omdb.Rated}}</p>

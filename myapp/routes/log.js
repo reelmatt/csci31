@@ -5,13 +5,7 @@ var http = require('http');
 var request = require('request');
 var fs = require('fs');
 
-// const films = [
-// 	"Star Wars",
-// 	"Jaws",
-// 	"The Return of the King",
-// 	"Good Will Hunting",
-// 	"Oceans Eleven"
-// ]
+
 
 
 // request("http://www.omdbapi.com/?t=Star+Wars&apikey=34ca85f7", {json: true}, (err, res, body) => {
@@ -23,15 +17,20 @@ var fs = require('fs');
 //http://www.omdbapi.com/?t=Star+Wars&apikey=34ca85f7
 
 router.get('/', function(req, res, next) {
-	res.render('film-index', {title: "Film Logger", films: req.app.locals.films})
+	console.log("In logRouter");
+	console.log(req.query.title);
+	req.app.locals.films.push(req.query.title);
+	var index = req.app.locals.films.length - 1;
+	var newfilm = '/films/' + index;
+	
+	console.log(req.app.locals.films);
+	res.redirect(newfilm);
 
 });
 
 
 /* GET home page. */
 router.get('/:film', function(req, res, next) {
-	console.log("in filmRouter... films are...");
-	console.log(req.app.locals.films);
 	console.log("getting film #...");
 	console.log(`${req.params.film}`);
 // 	var tempURI = "Ocean's Eleven";
@@ -39,13 +38,9 @@ router.get('/:film', function(req, res, next) {
 // 	var tempURI = encodeURI(tempURI);
 // 	console.log(tempURI);
 
-	var which_index = req.params.film;
-	var which_film = req.app.locals.films[which_index];
-	console.log("which film == " + which_film);
-
 	var base = "http://www.omdbapi.com/?";
 //	var title = "&t=" + tempURI;
-	var title = "&t=" + encodeURI(which_film);
+	var title = "&t=" + encodeURI(req.query.title);
 	var apikey = "apikey=34ca85f7";
 	var url = base + apikey + title;
 

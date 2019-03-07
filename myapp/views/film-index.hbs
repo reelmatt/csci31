@@ -1,0 +1,19 @@
+<h1>{{title}}</h1>
+<h2><a href='/'>Home</a></h2>
+{{#if films}}
+	<p>You've LOGGED films. Here they are...</p>
+	{{#each films}}
+		<p><a href='/films/{{@index}}'>{{this}}</a></p>
+	{{/each}}
+{{else}}
+	<p>You haven't logged any films yet. Get started!</p>
+{{/if}}
+
+<p><label>List of popular films:
+	<select name='title'>
+		{{#each films}}
+			<option value='{{this}}'>{{this}}</option>
+		{{/each}}
+	</select>
+</label></p>
+<p><input type='submit' value='See more!'></p>
