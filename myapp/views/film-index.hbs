@@ -1,12 +1,22 @@
 <h1>{{title}}</h1>
-<h2><a href='/'>Home</a></h2>
-{{#if films}}
+<nav>
+    <ul>
+        <li><a href="/films">Logged films</a></li>
+        <li><a href="/about">About</a></li>
+    </ul>
+</nav>
+
+
+{{#if userfilms}}
 	<p>You've LOGGED films. Here they are...</p>
-	{{#each films}}
+	{{#each userfilms}}
 		<p><a href='/films/{{@index}}'>{{this}}</a></p>
 	{{/each}}
 {{else}}
 	<p>You haven't logged any films yet. Get started!</p>
+	{{#each films}}
+		<p><a href='/films/{{@index}}'>{{this}}</a></p>
+	{{/each}}
 {{/if}}
 
 <p><label>List of popular films:

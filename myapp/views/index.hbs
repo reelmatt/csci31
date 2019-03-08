@@ -1,8 +1,14 @@
 <h1>{{title}}</h1>
-<a href="/films"><h2>Logged films</h2></a>
+<nav>
+    <ul>
+        <li><a href="/films">Logged films</a></li>
+        <li><a href="/about">About</a></li>
+    </ul>
+</nav>
+
 <p>Welcome to {{title}}! Use the form below to add details for a film you have recently
 seen. Be sure to add a rating so you remember if you liked it or not.</p>
-    <form method='GET' action='/add-film'>
+    <form method='GET' action='/log'>
         <p><label>Film:
             <input type='text' name='title'>
         </label></p>

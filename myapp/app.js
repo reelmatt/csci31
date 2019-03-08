@@ -1,17 +1,21 @@
 /* INCLUDES */
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const dotenv = require('dotenv').config();
+const filmGetter = require('./film_getter');
 
 /* ROUTES */
-var indexRouter = require('./routes/index');
-var logRouter = require('./routes/log');
-var usersRouter = require('./routes/users');
-var filmRouter = require('./routes/film');
+const indexRouter = require('./routes/index');
+const logRouter = require('./routes/log');
+const usersRouter = require('./routes/users');
+const filmRouter = require('./routes/film');
 
-var app = express();
+const app = express();
+
+
 
 /* STARTER FILMS */
 app.locals.films = [
@@ -40,7 +44,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /* PROCESS ROUTES */
 app.use('/', indexRouter);
-app.use('/add-film', logRouter);
+app.use('/about', indexRouter);
+app.use('/log', logRouter);
 app.use('/films', filmRouter);
 
 /* 404 error -- pass to handler */
