@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 
     //create film object with the user information
     const newfilm = {
-	    title: req.query.title,
+	    title: title,
 	    id: num_films,
 	    rating: req.query.rating
 	};
