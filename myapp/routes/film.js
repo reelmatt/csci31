@@ -5,15 +5,6 @@ var http = require('http');
 var request = require('request');
 var fs = require('fs');
 
-// const films = [
-// 	"Star Wars",
-// 	"Jaws",
-// 	"The Return of the King",
-// 	"Good Will Hunting",
-// 	"Oceans Eleven"
-// ]
-
-
 // request("http://www.omdbapi.com/?t=Star+Wars&apikey=34ca85f7", {json: true}, (err, res, body) => {
 // 	if(err) {return console.log(err); }
 // 	console.log(body.url);

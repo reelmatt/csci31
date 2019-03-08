@@ -14,7 +14,7 @@ var filmRouter = require('./routes/film');
 var app = express();
 
 /* STARTER FILMS */
-const defaults = [
+app.locals.films = [
 	"Star Wars",
 	"Jaws",
 	"The Return of the King",
@@ -22,10 +22,10 @@ const defaults = [
 	"Ocean's Eleven"
 ]
 
-const userfilms = []
+app.locals.userfilms = []
 
-app.locals.films = defaults;
-app.locals.userfilms = userfilms;
+// app.locals.films = defaults;
+// app.locals.userfilms = userfilms;
 
 /* VIEW ENGINE */
 app.set('views', path.join(__dirname, 'views'));
