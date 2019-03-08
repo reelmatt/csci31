@@ -1,48 +1,43 @@
+/* INCLUDES */
 var express = require('express');
 var router = express.Router();
-const filmGetter = require('../film_getter');
-
 var http = require('http');
 var request = require('request');
 var fs = require('fs');
 
+/* HELPER MODULE */
+const filmGetter = require('../film_getter');
+
+/* GET /films page */
 router.get('/', function(req, res, next) {
-	res.render('film-index', {title: "Film Logger", films: req.app.locals.films})
+	res.render('film-index', {
+	    title: "Film Logger",
+	    films: req.app.locals.films,
+	    userfilms: req.app.locals.userfilms
+	})
 });
 
-/* GET home page. */
+/* GET /films/# page. */
 router.get('/:film', function(req, res, next) {
-// 	console.log("in filmRouter... films are...");
-// 	console.log(req.app.locals.films);
-//     console.log("in filmRouter... userfilms are...");
-// 	console.log(req.app.locals.userfilms);
-// 	console.log("\n\ngetting film #... " + `${req.params.film}`);
+    //Log some helpful info
     filmGetter.logFilms(req.app.locals, req.params.film);
 
+    //find which film we want
 	var index = req.params.film;
-    var url = filmGetter.getUrl(req.app.locals.films[index]);
+	var which_film = req.app.locals.films[index];
 
-	filmGetter.getjson(url);
-	
+    //assemble url to send to OMDB API
+    var url = filmGetter.getUrl(which_film.title);
 
-	var contents = fs.readFileSync('tmp.json', {encoding: 'utf8'}, (err, data) => {
-		if(err){
-			throw err;
-		}
-		console.log("Read file!!");
-	});
-	
-	console.log("contents are...");
-//	console.log(contents);
-	var jsoncontent = JSON.parse(contents);
-	
+    //Download JSON content into a tmp.json file, read, and parse
+	var jsoncontent = filmGetter.getjson(url);
 
-	console.log("Title: ", jsoncontent.Title);
-
+    //Render page with parsed info from jsoncontent
     res.render('film', {
         title: "Film Logger",
         omdb: jsoncontent,
-        rating: req.query.rating
+        rating: req.query.rating,
+        userfilms: req.app.locals.userfilms
     });
 });
 

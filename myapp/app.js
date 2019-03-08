@@ -10,26 +10,21 @@ const filmGetter = require('./film_getter');
 /* ROUTES */
 const indexRouter = require('./routes/index');
 const logRouter = require('./routes/log');
-const usersRouter = require('./routes/users');
 const filmRouter = require('./routes/film');
 
 const app = express();
 
-
-
 /* STARTER FILMS */
 app.locals.films = [
-	"Star Wars",
-	"Jaws",
-	"The Return of the King",
-	"Good Will Hunting",
-	"Ocean's Eleven"
+	{title: "Star Wars", id: 0},
+	{title: "Jaws", id: 1},
+	{title: "The Return of the King", id: 2},
+	{title: "Good Will Hunting", id: 3},
+	{title: "Ocean's Eleven", id: 4}
 ]
 
 app.locals.userfilms = []
 
-// app.locals.films = defaults;
-// app.locals.userfilms = userfilms;
 
 /* VIEW ENGINE */
 app.set('views', path.join(__dirname, 'views'));
@@ -63,4 +58,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 module.exports = app;

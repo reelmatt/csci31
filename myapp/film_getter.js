@@ -1,6 +1,24 @@
+var express = require('express');
 var http = require('http');
 var request = require('request');
 var fs = require('fs');
+
+function loadjson(url) {
+
+    var contents = fs.readFileSync('tmp.json', {encoding: 'utf8'}, (err, data) => {
+        if(err){
+            throw err;
+        } else {
+        console.log("Read file!!");
+        }
+    });
+    
+    console.log("contents are...");
+	var jsoncontent = JSON.parse(contents);
+
+	console.log("Title: ", jsoncontent.Title);
+	return jsoncontent;
+}
 
 var film_getter = {
     getUrl: function(film) {
@@ -22,13 +40,17 @@ var film_getter = {
                 fs.writeFileSync('tmp.json', d, (err) => {
                     if(err) {
                         throw err;
-                    }
-                    
-                    console.log('The file has been saved!');
+                    } 
                 });
-            });       
+            });
+            
+            r.on('end', function() {
+                console.log('The file has been saved!');
+                loadjson(url);
+            });
         });
     },
+    
     logFilms: function(locals, film_number) {
         console.log("in filmGetter... films are...");
         console.log(locals.films);

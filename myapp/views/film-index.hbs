@@ -1,4 +1,4 @@
-<h1>{{title}}</h1>
+<h1><a href='/'>{{title}}</a></h1>
 <nav>
     <ul>
         <li><a href="/films">Logged films</a></li>
@@ -8,21 +8,21 @@
 
 
 {{#if userfilms}}
-	<p>You've LOGGED films. Here they are...</p>
+	<p>Here are the films you have logged.</p>
 	{{#each userfilms}}
-		<p><a href='/films/{{@index}}'>{{this}}</a></p>
+		<p><a href='/films/{{@index}}'>{{this.title}}</a></p>
 	{{/each}}
 {{else}}
 	<p>You haven't logged any films yet. Get started!</p>
 	{{#each films}}
-		<p><a href='/films/{{@index}}'>{{this}}</a></p>
+		<p><a href='/films/{{@index}}'>{{this.title}}</a></p>
 	{{/each}}
 {{/if}}
 
 <p><label>List of popular films:
 	<select name='title'>
 		{{#each films}}
-			<option value='{{this}}'>{{this}}</option>
+			<option value='{{this}}'>{{this.title}}</option>
 		{{/each}}
 	</select>
 </label></p>

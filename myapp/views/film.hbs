@@ -1,6 +1,14 @@
-<h1>{{title}}</h1>
-<h2><a href='/'>Home</a></h2>
+<h1><a href='/'>{{title}}</a></h1>
+<nav>
+    <ul>
+        <li><a href="/films">Logged films</a></li>
+        <li><a href="/about">About</a></li>
+    </ul>
+</nav>
 
 <h1>{{omdb.Title}}</h1>
 <a href='http://imdb.com/title/{{omdb.imdbID}}'><img src='{{omdb.Poster}}'></a>
-<p>Rating: {{omdb.Rated}}</p>
+<p>MPAA Rating: {{omdb.Rated}}</p>
+{{#if userfilms.rating}}
+<p>Your rating: {{rating}} out of 5 stars</p>
+{{/if}}
