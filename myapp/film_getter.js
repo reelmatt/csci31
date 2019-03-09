@@ -37,11 +37,11 @@ var film_getter = {
     },
     
     //Retrieve film information from OMDB URL, save to tmp.json
-    getjson: function(url) {
+    getjson: function(url, callback) {
         console.log("in getjson, url is..." + url);
         
         //var rs = fs.createReadStream(url);
-        var ws = fs.createWriteStream('tmp.json');
+//         var ws = fs.createWriteStream('tmp.json');
         
 /* @@TO-DO, implement as read/writeable streams to prevent partial file */
 //         rs.on('data', (chunk) => {
@@ -56,21 +56,31 @@ var film_getter = {
 
         //Write the info synchronously to 'tmp.json'
         http.get(url, function(res) {
-            res.setEncoding('utf8');
+            const { statusCode } = res;
             
-            res.on('data', function(d) {
-                fs.writeFileSync('tmp.json', d, (err) => {
-                    if(err) {
-                        throw err;
-                    } 
+            if(statusCode != 200) {
+                callback(`Error making API call: ${statusCode}`);
+            } else {
+            
+                res.setEncoding('utf8');
+                let responseData = "";
+                res.on('data', (chunk) => {
+                    responseData += chunk;
                 });
-            });
             
-            //Once complete, log it, and then load content
-            res.on('end', function() {
-                console.log('The file has been saved!');
-                loadjson(url);
-            });
+                //Once complete, log it, and then load content
+                res.on('end', function() {
+                    console.log('The file has been saved!');
+                    
+                    console.log("contents are...");
+                    var jsoncontent = JSON.parse(responseData);
+
+                    console.log("Title: ", jsoncontent.Title);
+                    callback(null, jsoncontent);
+                    //return jsoncontent;
+                    
+                });
+            }
         });
     },
     

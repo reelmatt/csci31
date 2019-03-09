@@ -30,15 +30,21 @@ router.get('/:film', function(req, res, next) {
     var url = filmGetter.getUrl(which_film.title);
 
     //Download JSON content into a tmp.json file, read, and parse
-	var film_info = filmGetter.getjson(url);
+	var film_info = filmGetter.getjson(url, (err, film_info) => {
+	    if(err) {
+	        console.log("oops... " + err);
+	    } else {
+	        //Render page with parsed info from jsoncontent
+            res.render('film', {
+                title: "Film Logger",
+                omdb: film_info,
+                rating: req.query.rating,
+                userfilms: req.app.locals.userfilms
+            });
+	    }
+	});
 
-    //Render page with parsed info from jsoncontent
-    res.render('film', {
-        title: "Film Logger",
-        omdb: film_info,
-        rating: req.query.rating,
-        userfilms: req.app.locals.userfilms
-    });
+    
 });
 
 module.exports = router;

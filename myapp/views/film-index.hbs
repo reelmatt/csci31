@@ -10,7 +10,7 @@
 {{#if userfilms}}
 	<p>Here are the films you have logged.</p>
 	{{#each userfilms}}
-		<p><a href='/films/{{@index}}'>{{this.title}}</a></p>
+		<p><a href='/films/{{this.id}}'>{{this.title}}</a></p>
 	{{/each}}
 {{else}}
 	<p>You haven't logged any films yet. Get started!</p>
