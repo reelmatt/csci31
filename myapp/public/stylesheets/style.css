@@ -49,3 +49,16 @@ nav ul li a:link {
 nav ul li a:hover {
     color: #18bc9c; /* flatly teel */
 }
+
+body {
+    max-width: 850px;
+    width: 90%;
+    margin: auto;
+    padding-bottom: 20px;
+    text-align: center;
+
+}
+
+img {
+    height: 200px;
+}
