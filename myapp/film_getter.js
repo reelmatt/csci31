@@ -4,94 +4,93 @@ var http = require('http');
 var request = require('request');
 var fs = require('fs');
 
+/*
+ *  getUrl()
+ *  Purpose: construct the URL to access film info from OMDB
+ *    Input: film, name of the film to get info on
+ *   Output: url, the fully-constructed URL to send to the OMDB API
+ */
+function getUrl(film) {
+    var base = "http://www.omdbapi.com/?";
+    var title = "&t=" + encodeURI(film);
+    var apikey = "apikey=" + process.env.OMDB;
+    var url = base + apikey + title;
+    
+    console.log("in film_getter, URL is " + url);
+    return url;
+}
 
-//Helper function to read file 'tmp.json', parse JSON and return results
-function loadjson(url) {
+/*
+ *  logFilms()
+ *  Purpose: log the current films stored in arrays
+ */
+function logFilms (film_number, locals)
+{
+    console.log("in filmGetter... films are...");
+    console.log(locals.films);
+    console.log("in filmGetter... userfilms are...");
+    console.log(locals.userfilms);
+    console.log("getting film #%d\n", film_number);
+}
 
-    var contents = fs.readFileSync('tmp.json', {encoding: 'utf8'}, (err, data) => {
-        if(err){
-            throw err;
-        } else {
-        console.log("Read file!!");
+/*
+ *  getjson()
+ *  Purpose: poll the OMDB API to get a JSON response of film information
+ */
+function getjson (film_title, callback)
+{
+    //construct OMDB url
+    let url = getUrl(film_title);
+
+    //Handle the request to the OMDB API
+    http.get(url, function(res) {
+        const { statusCode } = res;
+        
+        if(statusCode != 200)
+            callback(`Error making API call: ${statusCode}`);
+        else
+        {
+            res.setEncoding('utf8');
+            let responseData = "";
+            
+            res.on('data', (chunk) => {
+                responseData += chunk;
+            });
+        
+            //Once complete, log it, and then load content
+            res.on('end', function() {
+                var jsoncontent = JSON.parse(responseData);
+                
+                //Check that "Response" was true
+                //OMDB will return 200 if movie doesn't exist
+                if(jsoncontent.Response == "True")
+                    callback(null, jsoncontent);
+                else
+                    callback("Movie not found.", null);
+                
+            });
         }
     });
-    
-    console.log("contents are...");
-	var jsoncontent = JSON.parse(contents);
-
-	console.log("Title: ", jsoncontent.Title);
-	return jsoncontent;
 }
 
 /* MODULE */
 var film_getter = {
-    //Construct the URL to pass into OMDB
-    getUrl: function(film) {
-        var base = "http://www.omdbapi.com/?";
-        var title = "&t=" + encodeURI(film);
-        var apikey = "apikey=" + process.env.OMDB;
-        var url = base + apikey + title;
-        
-        console.log("in film_getter, URL is " + url);
-        return url;
+    //Retrieve film Object
+    getfilm: function(index, storage) {
+        //
+        let films_index = storage.films.length - 1;
+
+        //If the index is within the # of default films, get it
+        //Otherwise, get the user film that was logged
+        if(index <= films_index)
+            return storage.films[index];
+        else
+            return storage.userfilms[index - films_index - 1];
     },
     
-    //Retrieve film information from OMDB URL, save to tmp.json
-    getjson: function(url, callback) {
-        console.log("in getjson, url is..." + url);
-        
-        //var rs = fs.createReadStream(url);
-//         var ws = fs.createWriteStream('tmp.json');
-        
-/* @@TO-DO, implement as read/writeable streams to prevent partial file */
-//         rs.on('data', (chunk) => {
-//             console.log("chunk is ... " + chunk);
-//             rs.pipe(ws);
-//         })
-//         
-//         rs.on('end', function() {
-//             console.log('The file has been saved!');
-//             loadjson(url);
-//         });
 
-        //Write the info synchronously to 'tmp.json'
-        http.get(url, function(res) {
-            const { statusCode } = res;
-            
-            if(statusCode != 200) {
-                callback(`Error making API call: ${statusCode}`);
-            } else {
-            
-                res.setEncoding('utf8');
-                let responseData = "";
-                res.on('data', (chunk) => {
-                    responseData += chunk;
-                });
-            
-                //Once complete, log it, and then load content
-                res.on('end', function() {
-                    console.log('The file has been saved!');
-                    
-                    console.log("contents are...");
-                    var jsoncontent = JSON.parse(responseData);
-
-                    console.log("Title: ", jsoncontent.Title);
-                    callback(null, jsoncontent);
-                    //return jsoncontent;
-                    
-                });
-            }
-        });
-    },
-    
-    //Helper function to log the current films stored in arrays
-    logFilms: function(locals, film_number) {
-        console.log("in filmGetter... films are...");
-        console.log(locals.films);
-        console.log("in filmGetter... userfilms are...");
-        console.log(locals.userfilms);
-        console.log("\n\ngetting film #... " + film_number);
-    }
+    getjson: getjson,
+    logFilms: logFilms
 };
 
 

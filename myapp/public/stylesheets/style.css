@@ -7,25 +7,19 @@ a {
   color: #00B7FF;
 }
 
-header h1 {
+header {
     text-align: center;
     color: #000000
     text-decoration: none;
 }
 
-.foobar {
-    text-align: center;
+header a {
     color: #000000;
     text-decoration: none;
 }
 
 nav {
     text-align: center;
-
-}
-
-nav a {
-    color: #000000;
 }
 
 nav ul {
@@ -52,13 +46,35 @@ nav ul li a:hover {
 
 body {
     max-width: 850px;
-    width: 90%;
+    width: 70%;
     margin: auto;
     padding-bottom: 20px;
     text-align: center;
 
 }
 
+form {
+    text-align: left;
+    width: 50%;
+    margin: auto;
+}
+
 img {
     height: 200px;
+}
+
+.poster {
+    float: left;
+    clear: both;
+    margin-right: 30px;
+}
+
+.movie_info {
+    text-align: left;
+    margin-left: auto;
+    width: 80%;
+}
+
+.error {
+    color: red;
 }
