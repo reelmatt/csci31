@@ -14,6 +14,9 @@ const filmRouter = require('./routes/film');
 
 const app = express();
 
+/* APP NAME FOR PAGE HEADERS */
+app.locals.pageTitle = "Film Logger"
+
 /* STARTER FILMS */
 app.locals.films = [
 	{title: "Star Wars", id: 0},

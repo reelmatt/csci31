@@ -9,7 +9,9 @@ var titleCase = require('title-case');
 /* HELPER MODULE */
 const filmLogger = require('../film_logger');
 
-/* the /log path -- action for form submission */
+/*
+ *	the /log path -- action for form submission
+ */
 router.get('/', function(req, res, next) {
     //Convert user text into title case
     const title = titleCase(req.query.title);
