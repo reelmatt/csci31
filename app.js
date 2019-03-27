@@ -25,44 +25,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PWD}@clu
 	process.exit();
 });
 
-// /* PROMISES */
-// f1.save()
-// .then( (film) => {console.log("saved " + film); })
-// .then( () => {
-// 	console.log("step 2, film is");
-// 	Film.find({})
-// 	.then( (films) => {			
-// 			console.log("found films...\n" + films);
-// 			films[0].remove((err) => {
-// 				console.log("removed record");
-// 			});
-// 	})
-// 	
-// })
-// .catch((err) => console.error(err));
-
-
-
-/* ORIGINAL VERSION
-f1.save((err, film) => {
-	if(err)
-		console.log(err);
-
-	console.log("saved " + film);
-	Film.find({}, (err, films) => {
-		if(err)
-			console.log(err);
-		else
-		{
-			console.log("found films...\n" + films);
-			films[0].remove((err) => {
-				console.log("removed record");
-			});
-		}
-	});
-})
-*/	
-
 //Flash messages
 const session = require('express-session');
 const flash = require('connect-flash');
