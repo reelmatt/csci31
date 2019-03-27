@@ -13,8 +13,8 @@ router.use(flash());
 
 /* CONTROLLERS */
 const auth = require('../controllers/auth');
-const filmGetter = require('../controllers/film_getter');
-
+const omdb = require('../controllers/omdb');
+const filmController = require('../controllers/film');
 const Film = require('../models/filmModel');
 
 
@@ -57,125 +57,10 @@ function getUserFilm(req)
     return req.app.locals.userfilms[index];
 }
 
-/*
- *	GET /films page
- */
-router.get('/', function(req, res, next) {
-    console.log("IN THE /FILM router");
-    
-    if(req.query.title)
-    {
-    	let whichFilm = "/films/" + req.query.title;
-    	res.redirect(whichFilm);
-    }
-    else
-    {
-		Film.find({})
-		.then((films) => {
-			console.log("we found films! they are...");
-			console.log(films);
-				res.render('film-index', {
-					title: req.app.locals.pageTitle,
-					films: films,
-					userfilms: films
-				})
-		})
-		.catch((err) => {
-			console.log("db search failed, here's why...");
-			if(err)
-			{
-				console.log(err);
-				res.end("ERROR!");
-			}
-		});
-	}
- /*   
-    //No query, load normal page
-    if(!req.body.title)
-    {
-        res.render('film-index', {
-            title: req.app.locals.pageTitle,
-            films: req.app.locals.films,
-            userfilms: req.app.locals.userfilms
-        })    
-    } 
-    //Used form on /films page to pick default film, load page
-    else
-    {
-        //get index in default_films array for form sumbmission
-        let index = getDefaultFilm(req.query.title, req.app.locals.films);
-        
-        //If a match was found, direct to that page
-        if (index != undefined)
-            res.redirect('/films/' + index);
-        else
-            res.redirect(404);
-    }*/
-});
 
-/*
- *	GET /films/# page.
- */
-router.get('/:film', function(req, res, next) {
-    //Log some helpful info
-    //filmGetter.logger(req.params.film, req.app.locals);
-
-    //find which film we want, returns an object
-    //var whichFilm = filmGetter.getFilm(req.params.film, req.app.locals);
-	console.log("trying to find film ID: "+ req.params.film);
-	Film.findById(req.params.film, (err, film) => {
-		if(err)
-		{
-			console.log("findById error of " + err);
-			req.flash("apiError", "That film page does not exist!");
-			res.redirect('/');
-		}
-		else
-		{
-			console.log("found the film. It is... ");
-			console.log(film);
-			
-			res.render('film', {
-				title: req.app.locals.pageTitle,
-				info: film
-			});
-		}
-	})
-	
-	
- /*   //if the film has been logged
-    if(whichFilm)
-    {
-        //Pull in data from OMDB, parse, and render the page
-        filmGetter.getJson(whichFilm.title, (err, filmInfo) => {
-            if(err)
-            {
-                //req.app.locals.error = err;
-                req.flash("apiError", err);
-                res.redirect('/');
-            }
-            else
-            {
-                //if it is a user film, pull in object
-                let requestedUserFilm = getUserFilm(req);
-                
-                //render page
-                res.render('film', {
-                    title: req.app.locals.pageTitle,
-                    omdb: filmInfo,
-                    userfilms: requestedUserFilm
-                });
-            }
-        });
-    }*/
-    //the film has not been logged, return error message
-//     else
-//     {
-//     	req.flash("apiError", "That film page does not exist!");
-//         res.redirect('/');
-//     } 
-});
-
-
-
+router.get('/', auth.required, filmController.index);					//Film index
+router.get('/:film', auth.required, filmController.show);				//Show film info
+router.get('/:film/edit', auth.required, filmController.edit);			//Edit film
+router.post('/:film', auth.required, filmController.update);			//Save film changes
+router.get('/:film/delete', auth.required, filmController.remove)	//Delete film
 module.exports = router;

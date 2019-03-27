@@ -1,5 +1,5 @@
 /* INCLUDES */
-const omdb = require('./film_getter');
+const omdb = require('./omdb');
 const flash = require('connect-flash');
 const express = require('express');
 const app = express();
@@ -26,6 +26,7 @@ function addToDatabase(film, res)
 	});
 }
 
+/* Construct the film object to add to the database */
 function makeFilm(title, rating, info)
 {
 	return {
@@ -39,9 +40,11 @@ function logFilm(req, res)
 {
 	console.log("IN LOG FILM");
 
-    const title = titleCase(req.body.title);	    //Convert user text into title case
+	//Convert user text into title case
+    const title = titleCase(req.body.title);	    
 	console.log("title is " + title);
 
+	//Promise to retrieve the info from OMDB
 	return new Promise ((resolve, reject) => {
 		//Call on the OMDB API to see if we can get info on the film
 		omdb.getJson(title)

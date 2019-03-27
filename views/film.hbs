@@ -1,14 +1,3 @@
-<header>
-    <h1><a href='/'>{{title}}</a></h1>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/films">Logged films</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
-</header>
-
 <div class='poster'>
     <a href='http://imdb.com/title/{{info.imdbID}}'><img src='{{info.poster}}'></a>
 </div>
@@ -20,4 +9,6 @@
     {{#if info.rating}}
         <p>Your rating: {{info.rating}} out of 5 stars</p>
     {{/if}}
+    <p><a href=/films/{{info._id}}/edit>Edit info</a></p>
+    <p><a href=/films/{{info._id}}/delete>Delete</a></p>
 </div>

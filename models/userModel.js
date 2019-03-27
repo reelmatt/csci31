@@ -3,10 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-	name: {type: String, required:true},
-	rating: Number,
-	poster: String,
-	user: String,
+	user: {type: String, required: true},
+	email: String,
+	password: {type: String, required: true},
 	createdAt: Date,
 	updatedAt: Date
 });
@@ -20,4 +19,4 @@ schema.pre('save', function(next) {
 	next();
 });
 
-module.exports = mongoose.model("Film", schema);
+module.exports = mongoose.model("User", schema);

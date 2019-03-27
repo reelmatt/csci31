@@ -1,25 +1,7 @@
-<header>
-    <h1 class=''><a href='/' class='foobar'>{{title}}</a></h1>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/films">Logged films</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/login">Login</a></li>
-        </ul>
-    </nav>
-</header>
-<p>Welcome to {{title}}! Use the form below to add details for a film you have recently
-seen. Be sure to add a rating so you remember if you liked it or not.</p>
-    <form method='POST' action='/log'>
-        <p><label>Film:
-            <input type='text' name='title' required>
-        </label> *required</p>
-        <p><label>Rating:
-            <input type='number' name='rating' max='5' min='0' size='5' width='200px'>
-        </label></p>
-        <p><input type='submit' value='Log Film'></p>
-    </form>
-{{#if error}}
-    <p class='error'>Whoops! {{error}}</p>
-{{/if}}
+<p>Welcome to {{title}}! You can use this site to add ratings to films you have seen
+to remember if you liked them or not. Start by logging in above and then going to
+<a href="/log">Log Film</a> to get started. Films you have logged already will appear
+in your <a href="/diary">Diary</a> so you can reference, update, and/or delete them
+later.</p>
+<p>If you cannot think of any recent films, try logging a film like <i>Star Wars</i> or
+<i>Jaws</i> to get started</p>

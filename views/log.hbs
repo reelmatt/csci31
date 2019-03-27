@@ -1,0 +1,12 @@
+{{#if error}}
+    <p class='error'>Whoops! {{error}}</p>
+{{/if}}
+<form method='POST' action='/log'>
+	<p><label>Film:
+		<input type='text' name='title'>
+	</label> *required</p>
+	<p><label>Rating:
+		<input type='number' name='rating' max='5' min='0' size='5' width='200px'>
+	</label></p>
+	<p><input type='submit' value='Log Film'></p>
+</form>

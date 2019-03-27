@@ -12,28 +12,28 @@ const auth = require('../controllers/auth');
 const filmLogger = require('../controllers/film_logger');
 router.use(flash());
 
-/*
- *	the /log path -- action for form submission
- */
-router.post('/', function(req, res, next) {
+router.get('/', auth.required, function(req, res, next) {
+	res.render('log', { 
+        user: req.session.user,
+        error: req.flash("apiError")
+    });
+	
+});
+
+/* Log a new film */
+router.post('/', auth.required, function(req, res, next) {
 	//The form 'requires' the title, but error check anyway
-	if (req.body.title)
+	if(!req.body.title)
 	{
-		filmLogger.logFilm(req, res)
-		.then(() => {
-	    	console.log("filmLogger succeeded, redirecting now...");
-	    	res.redirect("/films");
-		})
-		.catch((err) => {
-			console.log(err);
-	    	console.log("in log.js, and there was error?");
-		});
+		req.flash('inputError', "No film entered. Try again.");
+	    res.redirect('/log');
 	}
-	else
-	{
-	 	req.flash('inputError', "No film entered. Try again.");
-	    res.redirect('/');
-	}
+	
+	//Log the film and redirect
+	filmLogger.logFilm(req, res)
+		.then(() => {res.redirect("/films");})
+		.catch((err) => {console.log(err);});
+
 });
 
 /* ERROR HANDLER */

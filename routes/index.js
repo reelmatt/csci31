@@ -3,19 +3,45 @@ var express = require('express');
 var router = express.Router();
 const flash = require('connect-flash');
 const auth = require('../controllers/auth');
-
 router.use(flash());
+const User = require('../models/userModel');
 
-/* GET home page. */
+/* Home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { 
-        title: 'Film Logger',
+    console.log("current user is: " + req.session.user);
+    res.render('index', {
+		user: req.session.user,
         error: req.flash("apiError")
     });
 });
 
+/* Register new user */
+router.post('/register', (req, res, next) => {
+	var user = new User({
+		user: req.body.user,
+		email: req.body.email,
+		password: req.body.password
+	});
+	
+	console.log(user);
+	
+	user.save()
+		.then(() => {
+			console.log("added user");
+			res.redirect("/");
+		})
+		.catch((err) => {
+			console.log(err);
+			throw new Error("UserRegistrationError", user);
+		});
+	
+});
+
+/* Login page. */
 router.get('/login', (req, res)=>{
-    res.render('login');
+    res.render('login', {
+		user: req.session.user
+    });
 })
 
 /*
@@ -25,19 +51,31 @@ router.get('/login', (req, res)=>{
  *	set a test user in session.
  */
 router.post('/login', (req, res)=>{
-    req.session.user = 'CSCIE31'
-    res.redirect('/');
+    User.findOne({user: req.body.user, password: req.body.password})
+    	.then((result) => {
+    		console.log("here is the login result...");
+    		console.log(result);
+    		req.session.user = result.user;
+    		res.redirect('/');
+    	})
+    	.catch((err) => {
+    		console.log("user not found, could not log in");
+    		
+    	});
+    
+    //req.session.user = req.body.user;
+    
 })
 
 router.get('/logout', (req, res)=>{
-    req.session.user = ''
+    req.session.user = undefined;
     res.redirect('/');
 })
 
-/* GET about page */
-router.get('/about', auth.required, function(req, res, next) {
+/* About page */
+router.get('/about', function(req, res, next) {
     res.render('about', {
-        title: req.app.locals.pageTitle
+		user: req.session.user
     });
 });
 

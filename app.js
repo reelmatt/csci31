@@ -7,10 +7,14 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const app = express();
 require('dotenv').config();
+const hbs = require('hbs');
 
+
+hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerHelper("title", () => {return process.env.APP_NAME;});
 
 /* CONTROLLERS */
-const filmGetter = require('./controllers/film_getter');
+const omdb = require('./controllers/omdb');
 
 /* DATABASE */
 const mongoose = require('mongoose');
@@ -21,22 +25,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PWD}@clu
 	process.exit();
 });
 
-
-
-// var db = mongoose.connection;
-	
-// var filmSchema = mongoose.Schema({
-// 	name: {type: String, required:true},
-// 	rating: Number
-// });
-
-// var Film = mongoose.model('Film', filmSchema);
-// 
-// var f1 = new Film({name: "Harry Potter", rating: 4});
-// 
-// 
-// 
-// 
 // /* PROMISES */
 // f1.save()
 // .then( (film) => {console.log("saved " + film); })
@@ -75,10 +63,6 @@ f1.save((err, film) => {
 })
 */	
 
-
-
-
-
 //Flash messages
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -87,23 +71,6 @@ const flash = require('connect-flash');
 const indexRouter = require('./routes/index');
 const logRouter = require('./routes/log');
 const filmRouter = require('./routes/film');
-// const loginRouter = require('./routes/login');
-
-
-
-/* APP NAME FOR PAGE HEADERS */
-app.locals.pageTitle = "Film Logger"
-
-/* STARTER FILMS */
-app.locals.films = [
-	{title: "Star Wars", id: 0},
-	{title: "Jaws", id: 1},
-	{title: "The Return of the King", id: 2},
-	{title: "Good Will Hunting", id: 3},
-	{title: "Ocean's Eleven", id: 4}
-]
-
-app.locals.userfilms = []
 
 
 /* VIEW ENGINE */
@@ -125,7 +92,7 @@ app.use(session({
 
 app.use(flash());
 
-/* PROCESS ROUTES */
+/* ROUTES */
 app.use('/', indexRouter);
 app.use('/about', indexRouter);
 app.use('/login', indexRouter);
