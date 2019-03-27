@@ -25,27 +25,11 @@ function getUrl(film) {
 }
 
 /*
- *  logger()
- *  Purpose: log the current films stored in arrays
- *	  Input: film_number, the unique ID/index of film you are trying to access
- *			 locals, the storage object where the films and userfilms arrays are kept
- */
-function logger (filmNumber, locals)
-{
-    console.log("films are...");
-    console.log(locals.films);
-    console.log("userfilms are...");
-    console.log(locals.userfilms);
-    console.log("getting film #%d\n", filmNumber);
-}
-
-/*
  *  getJson()
  *  Purpose: poll the OMDB API to get a JSON response of film information
  *	  Input: film_title, name of the film to get info on
- *			 callback, function to return error, or film_info back to film.js router
  */
-function getJson (filmTitle, callback)
+function getJson (filmTitle)
 {
 	//construct OMDB url
     let url = getUrl(filmTitle);
@@ -55,10 +39,11 @@ function getJson (filmTitle, callback)
 			if(res.statusCode != 200)				//Check for error calling API
 			{
 				console.err("API call error");
-				return reject({
-					statusCode: res.statusCode,
-					message: "API ERROR"
-				});
+				return reject(new Error('ResponseError', res.statusCode));
+// 				return reject({
+// 					statusCode: res.statusCode,
+// 					message: "API ERROR"
+// 				});
 			}
 			else
 			{
@@ -74,10 +59,11 @@ function getJson (filmTitle, callback)
 					console.log(info);
 					//Check that "Response" was true
 					//OMDB will return 200 even if movie doesn't exist
-					if(info.Response == "True")
+					if(info.Response === 'True')
 						return resolve(info);
 					else
-						return reject("Movie not found");
+						return reject(new Error('MovieNotFound'));
+						//return reject("Movie not found.");
 				
 				});
 			}
@@ -109,4 +95,3 @@ function getFilm (index, storage)
 /* MODULE */
 module.exports.getFilm = getFilm;
 module.exports.getJson = getJson;
-module.exports.logger = logger;

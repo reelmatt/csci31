@@ -1,3 +1,6 @@
+{{#if flashMsg}}
+    <p class='error'>Whoops! {{flashMsg}}</p>
+{{/if}}
 {{#if films}}
 	<p>Here are the films you have logged.</p>
 	{{#each films}}

@@ -9,7 +9,6 @@ var titleCase = require('title-case');
 
 app.use(flash());
 
-
 function addToDatabase(film, res)
 {
 	console.log("Adding film to database. Here's the info.");
@@ -20,26 +19,30 @@ function addToDatabase(film, res)
 		.then(() => {return resolve();})
 		.catch((err) => {
 			console.log(err);
-			throw new Error("FilmSaveError", film);
-			return reject();
+			return reject(new Error("FilmSaveError", film));
 		});
 	});
 }
 
 /* Construct the film object to add to the database */
-function makeFilm(title, rating, info)
+function makeFilm(req, title, info)
 {
 	return {
 		name: title,
-		rating: rating,
-		poster: info.Poster
+		rating: req.body.rating,
+		poster: info.Poster,
+		imdbId: info.imdbID,
+		plot: info.Plot,
+		mpaa: info.Rated,
+		cast: info.Actors,
+		runtime: info.Runtime,
+		year: info.Released,
+		user: req.session.user,
 	};
 }
 
 function logFilm(req, res) 
 {
-	console.log("IN LOG FILM");
-
 	//Convert user text into title case
     const title = titleCase(req.body.title);	    
 	console.log("title is " + title);
@@ -49,27 +52,23 @@ function logFilm(req, res)
 		//Call on the OMDB API to see if we can get info on the film
 		omdb.getJson(title)
 		.then((info) => {
-			var film = new Film(makeFilm(title, req.body.rating, info));
+			var film = new Film(makeFilm(req, title, info));
 			
 			addToDatabase(film, res)
-			.then(() => {			
-				console.log("passed, added to database");
-				return resolve();
-			})
-			.catch(() => {
-				console.log("nope, not added. Try again");
-				return reject();
-			});
-			
-	//		return (addToDatabase(film, res) ? resolve() : reject());
+			.then(() => { return resolve(); })		//successfully added
+			.catch(() => { return reject(); });		//mongoose error			
 		})
+		//getJson was unsuccessful
 		.catch((err) => {
 			console.error("in film logger CATCH, the error was");
-			console.error(err);
-			req.flash("apiError", err);
-			res.redirect('/');
+			console.error(err.message);
+			return reject(err);
+// 			req.flash("apiError", err);
+// 			res.redirect('/');
 		});
 	});
 }
+
+
 
 module.exports.logFilm = logFilm;

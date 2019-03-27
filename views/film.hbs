@@ -1,11 +1,14 @@
+{{#if flashMsg}}
+    <p class='error'>Whoops! {{flashMsg}}</p>
+{{/if}}
 <div class='poster'>
-    <a href='http://imdb.com/title/{{info.imdbID}}'><img src='{{info.poster}}'></a>
+    <a href='http://imdb.com/title/{{info.imdbId}}'><img src='{{info.poster}}'></a>
 </div>
 <div class='movie_info'>
     <h1>{{info.name}}</h1>
-    <p>Plot: {{info.Plot}}</p>
-    <p>Cast: {{info.Actors}}</p>
-    <p>MPAA Rating: {{info.Rated}}</p>
+    <p>Plot: {{info.plot}}</p>
+    <p>Cast: {{info.cast}}</p>
+    <p>MPAA Rating: {{info.mpaa}}</p>
     {{#if info.rating}}
         <p>Your rating: {{info.rating}} out of 5 stars</p>
     {{/if}}

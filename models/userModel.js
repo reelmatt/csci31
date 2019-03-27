@@ -10,6 +10,9 @@ const schema = new Schema({
 	updatedAt: Date
 });
 
+/* When saving to the database, add a created time. For each subsequent
+ * update, save an updated time.
+ */
 schema.pre('save', function(next) {
 	if(!this.createdAt)
 		this.createdAt = new Date();

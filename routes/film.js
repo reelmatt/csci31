@@ -6,6 +6,8 @@ var http = require('http');
 var request = require('request');
 var fs = require('fs');
 
+/* DATABASE MODEL */
+const Film = require('../models/filmModel');
 
 /* FLASH MESSAGES */
 const flash = require('connect-flash');
@@ -15,52 +17,108 @@ router.use(flash());
 const auth = require('../controllers/auth');
 const omdb = require('../controllers/omdb');
 const filmController = require('../controllers/film');
-const Film = require('../models/filmModel');
+
+/* Film index */
+router.get('/', auth.required, (req, res, next) => {
+
+	Film.find({user: req.session.user})
+	.then((films) => {
+		res.render('diary', {
+			user: req.session.user,
+			films: films,
+			userfilms: films,
+			flashMsg: req.flash('PageError')
+		});
+	})
+	.catch((err) => {
+		if(err)
+			next(new Error('DBSearchFailed', err));
+	});
+});
+
+/* Show film info */
+router.get('/:film', auth.required, (req, res, next) => {
+	Film.findById(req.params.film)
+	.then((film) => {
+		res.render('film', {
+			user: req.session.user,
+			info: film
+		});
+	})
+	.catch((err) => { next(new Error("FilmNoExist", err)); });
+});
 
 
-/*
- *  get_default_film()
- *  Purpose: compare dropdown selection with array of default films
- *    Input: requested_film, query parameter from /film form submission
- *           default_films, array of default film Objects
- *   Return: undefined, if film not one of the default options;
- *           otherwise, index in the default_films array
- */
-function getDefaultFilm(requestedFilm, defaultFilms)
-{
-    let index = undefined;
+/* Edit film */
+router.get('/:film/edit', auth.required, (req, res, next) => {
+	Film.findById(req.params.film)
+	.then((film) => {
+		res.render('updateFilm', {
+			user: req.session.user,
+			film: film
+		});
+	})
+	.catch((err) => { next(new Error('EditPageError', err)); });
+});
 
-    //iterate through "films" default array to find correct object
-    defaultFilms.forEach(film => {
-        //if query matches film.title, store the index
-        if(film.title == requestedFilm)
-            index = film.id;        
-    })
-    
-    return index;
-}
-
-/*
- *  get_user_film()
- *  Purpose: return a userfilm object if it has been logged
- */
-function getUserFilm(req)
-{
-    //Render page with parsed info from jsoncontent
-    let returnFilm = undefined;
-    let defaultFilms = req.app.locals.films.length;
-    let index = req.params.film - defaultFilms;
-
-    if(index > 0)
-        returnFilm = index;
-
-    return req.app.locals.userfilms[index];
-}
+/* Delete film */
+router.get('/:film/delete', auth.required, (req, res, next) => {
+	Film.deleteOne({_id: req.params.film})
+	.then((film) => { res.redirect('/films'); })					//successfully deleted film
+	.catch((err) => { next(new Error('DeletionError', err)); });	//problem with deletion
+});
 
 
-router.get('/', auth.required, filmController.index);					//Film index
-router.get('/:film', auth.required, filmController.show);				//Show film info
-router.get('/:film/edit', auth.required, filmController.edit);			//Edit film
-router.post('/:film', auth.required, filmController.update);			//Save film changes
-router.get('/:film/delete', auth.required, filmController.remove)	//Delete film
+/* Save changes to film */
+router.post('/:film', auth.required, (req, res, next) => {
+	Film.findById(req.params.film)
+	.then((film) => {
+		var data = {
+			rating: req.body.rating
+		}
+		
+		film.set(data);
+		
+		film.save()
+		.then(() => {res.redirect('/films/' + req.params.film); })
+		.catch((err) => { next(new Error('UpdateError', err)); });
+
+	})
+	.catch((err) => { next(new Error('EditPageError', err)); });
+});
+
+/* ERROR HANDLER */
+router.use((err, req, res, next) => {
+	console.log("Error: " + err.message);
+	if(err.message === 'FilmNoExist')
+	{
+		req.flash('PageError', 'That film page does not exist!');
+		res.redirect('/films');
+	}
+	else if(err.message === 'EditPageError')
+	{
+		req.flash('PageError', 'There was a problem editing this film. Try again.');
+		res.redirect('/films' + req.params.film);
+	}
+	else if(err.message === 'DBSearchFailed')
+	{
+		req.flash('PageError', 'Mongoose had trouble searching for films!');
+		res.redirect('/films');
+	}
+	else if(err.message === 'DeletionError')
+	{
+		req.flash('PageError', 'There was a problem deleting this film. Try again.');
+		res.redirect('/films' + req.params.film);
+	}
+	else if(err.message === 'UpdateError')
+	{
+		req.flash('PageError', 'There was a problem saving changes to the database.');
+		res.redirect('/films' + req.params.film + '/edit');
+	}
+	else
+	{
+		next(err);
+	}
+});
+
 module.exports = router;

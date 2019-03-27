@@ -1,23 +1,15 @@
+{{#if flashMsg}}
+    <p class='error'>Whoops! {{flashMsg}}</p>
+{{/if}}
+
 <p>Login</p>
+<p>Haven't signed up yet? <a href='/register'>Register here!</a></p>
 <form method="POST" action="/login">
 	<p><label for="name">Username: 
-		<input type="text" name="user" value="CSCI31">
+		<input type="text" name="user" value="matt">
 	</label></p>
 	<p><label for="email">Password: 
-		<input type="text" name="password" value="password123">
+		<input type="text" name="password" value="123">
 	</label></p>
 	<p><input type="submit" value="Login"></p>
-</form>
-<p>Register</p>
-<form method="POST" action="/register">
-	<p><label for="user">Username: 
-		<input type="text" name="user">
-	</label></p>
-	<p><label for="email">Email: 
-		<input type="text" name="email">
-	</label></p>
-	<p><label for="password">Password: 
-		<input type="password" name="password">
-	</label></p>
-	<p><input type="submit" value="Register"></p>
 </form>
