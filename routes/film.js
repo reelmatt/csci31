@@ -21,7 +21,7 @@ const auth = require('../controllers/auth');
 // Film index (diary)
 router.get('/', auth.required, (req, res, next) => {
 	Film.find({user: req.session.user})
-	.then((films) => {renderPage('diary', req, res, films, 'PageError');})
+	.then((films) => {renderPage('diary', req, res, films, 'SearchError');})
 	.catch((err) => {
 		if(err)
 			next(new Error('DBSearchFailed', err));
@@ -31,14 +31,14 @@ router.get('/', auth.required, (req, res, next) => {
 // Page for individual film
 router.get('/:film', auth.required, (req, res, next) => {
 	Film.findById(req.params.film)
-	.then((film) => { renderPage('film', req, res, film, null); })
+	.then((film) => { renderPage('film', req, res, film, 'FilmError'); })
 	.catch((err) => { next(new Error("FilmNoExist", err)); });
 });
 
 // Form to edit film info
 router.get('/:film/edit', auth.required, (req, res, next) => {
 	Film.findById(req.params.film)
-	.then((film) => { renderPage('update', req, res, film, null); })
+	.then((film) => { renderPage('update', req, res, film, 'EditError'); })
 	.catch((err) => { next(new Error('EditPageError', err)); });
 });
 
@@ -93,29 +93,30 @@ function update (req)
  ************************************/
 router.use((err, req, res, next) => {
 	console.log("Error: " + err.message);
+	console.log(err);
 	if(err.message === 'FilmNoExist')
 	{
-		req.flash('PageError', 'That film page does not exist!');
+		req.flash('SearchError', 'That film page does not exist!');
 		res.redirect('/films');
-	}
-	else if(err.message === 'EditPageError')
-	{
-		req.flash('PageError', 'There was a problem editing this film. Try again.');
-		res.redirect('/films' + req.params.film);
 	}
 	else if(err.message === 'DBSearchFailed')
 	{
-		req.flash('PageError', 'Mongoose had trouble searching for films!');
+		req.flash('SearchError', 'Mongoose had trouble searching for films!');
 		res.redirect('/films');
 	}
 	else if(err.message === 'DeletionError')
 	{
-		req.flash('PageError', 'There was a problem deleting this film. Try again.');
+		req.flash('FilmError', 'There was a problem deleting this film. Try again.');
 		res.redirect('/films' + req.params.film);
+	}
+	else if(err.message === 'EditPageError')
+	{
+		req.flash('EditError', 'There was a problem editing this film. Try again.');
+		res.redirect('/films' + req.params.film + '/edit');
 	}
 	else if(err.message === 'UpdateError')
 	{
-		req.flash('PageError', 'There was a problem saving changes to the database.');
+		req.flash('EditError', 'There was a problem saving changes to the database.');
 		res.redirect('/films' + req.params.film + '/edit');
 	}
 	else
