@@ -1,10 +1,13 @@
-
-/* MODELS */
+/************************************
+ * Setup for auth.js
+ ************************************/
+// MODELS
 const User = require('../models/userModel');
 
 /*
- *	This code was copied from the week 8 sample code on GitHub. This is used
- *	for user authorization and authentication with other routers/controllers.
+ *	The 'option' and 'required' methods were copied from the week 8 sample
+ *	code on GitHub. This is used for user authorization and authentication
+ *	with other routers/controllers.
  */
 const auth = {
 	// Middleware function which allows access no matter what

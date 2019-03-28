@@ -29,7 +29,6 @@ router.post('/', auth.required, function(req, res, next) {
 	filmLogger.logFilm(req, res)
 	.then(() => { res.redirect("/films"); })
 	.catch((err) => { next(new Error(err.message)); });
-
 });
 
 /************************************
