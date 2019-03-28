@@ -2,16 +2,16 @@
     <p class='error'>Whoops! {{flashMsg}}</p>
 {{/if}}
 <div class='poster'>
-    <a href='http://imdb.com/title/{{info.imdbId}}'><img src='{{info.poster}}'></a>
+    <a href='http://imdb.com/title/{{film.imdbId}}'><img src='{{film.poster}}'></a>
 </div>
 <div class='movie_info'>
-    <h1>{{info.name}}</h1>
-    <p>Plot: {{info.plot}}</p>
-    <p>Cast: {{info.cast}}</p>
-    <p>MPAA Rating: {{info.mpaa}}</p>
-    {{#if info.rating}}
-        <p>Your rating: {{info.rating}} out of 5 stars</p>
+    <h1>{{film.name}}</h1>
+    <p>Plot: {{film.plot}}</p>
+    <p>Cast: {{film.cast}}</p>
+    <p>MPAA Rating: {{film.mpaa}}</p>
+    {{#if film.rating}}
+        <p>Your rating: {{film.rating}} out of 5 stars</p>
     {{/if}}
-    <p><a href=/films/{{info._id}}/edit>Edit info</a></p>
-    <p><a href=/films/{{info._id}}/delete>Delete</a></p>
+    <p><a href=/films/{{film._id}}/edit>Edit info</a></p>
+    <p><a href=/films/{{film._id}}/delete>Delete</a></p>
 </div>

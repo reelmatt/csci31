@@ -1,47 +1,40 @@
-/* INCLUDES */
+/************************************
+ * Setup for log.js
+ ************************************/
+// INCLUDES
 var express = require('express');
 var router = express.Router();
-var http = require('http');
-var request = require('request');
-var fs = require('fs');
-
 const flash = require('connect-flash');
-const auth = require('../controllers/auth');
 
-/* HELPER MODULE */
+// HELPER MODULE
+const auth = require('../controllers/auth');
 const filmLogger = require('../controllers/film_logger');
 router.use(flash());
 
+/************************************
+ * Routers for log.js
+ ************************************/
+// Log Film - Form to enter information
 router.get('/', auth.required, function(req, res, next) {
-	res.render('log', { 
-        user: req.session.user,
-        flashMsg: req.flash("LogError")
-    });
-	
+	res.render('log', { flashMsg: req.flash("LogError") });
 });
 
-/* Log a new film */
+// Add new film to the database
 router.post('/', auth.required, function(req, res, next) {
-	
 	//The form 'requires' the title, but error check anyway
 	if(!req.body.title)
-	{
-		console.log("No title entered");
 		return next(new Error('InvalidInputError'));
-	}
 	
 	//Log the film and redirect
 	filmLogger.logFilm(req, res)
-		.then(() => {res.redirect("/films");})
-		.catch((err) => {
-			console.log("in log.js, filmLogger error");
-			console.log(err.message);
-			next(new Error(err.message));
-		});
+	.then(() => { res.redirect("/films"); })
+	.catch((err) => { next(new Error(err.message)); });
 
 });
 
-/* ERROR HANDLER */
+/************************************
+ * Error handler for log.js
+ ************************************/
 router.use((err, req, res, next) => {
 	console.log("Error: " + err.message);
 	if(err.message === 'InvalidInputError')
