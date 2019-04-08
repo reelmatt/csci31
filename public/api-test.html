@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Testing the API</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  </head>
+  <body class="vsc-initialized">
+    <div class="container">
+      <h3>Film API test</h3>
+      <p>This HTML/JS page tests the Film API by listing all; then creating, finding, updating, and deleting a film entry using the REST API. A few notes:
+        <ul>
+          <li>The form below contains the two pieces of information asked for when
+          		<a href='/log'>logging a film</a> through the app.</li>
+          <li>After entering a film and rating, click the "Test the API" button below
+          		to run the tests.</li>
+          <li>Log output will be displayed in the browser console. For the update
+          		step, the rating is changed to "5" -- it is recommended you enter in
+          		a different value in the form to see the change.</li>
+          <li>See the console for output as the process completes.</li>
+        </ul>
+      </p>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+		<form>
+      		<div class="form-group"><label for="title">Film:
+				<input class="form-control" id="title" type='text' name='title'>
+				*required</label>
+			</div>
+      		<div class="form-group"><label for="rating">Rating:
+				<input class="form-control" id="rating" type='number' max='5' min='0' size='5' width='200px' name='rating'></label>
+			</div>			
+            <button class="btn btn-primary" id="testme" type="button">Test the API</button>
+    	</form>
+      
+        
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/api.js"></script>
+  </body>
+</html>
