@@ -1,7 +1,7 @@
 // wrap in IIFE to control scope
 (function(){
 
-	const baseURL = 'http://localhost:8080';
+	const baseURL = 'http://167.99.149.212:8080';
 	
 	function logResult(method, result)
 	{
