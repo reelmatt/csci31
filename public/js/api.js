@@ -16,7 +16,6 @@
 			rating: document.getElementById("rating").value
 		};
 		
-// 		console.log("new film from form is " + film.title);
 		return film;
 	}
 	
@@ -43,44 +42,11 @@
 		.then((result) => {logResult("delete result", result);})
 
 		// any errors?
-		/*
-		
-			// add a film from form data
-			callAPI('POST', '/api/films', postData)
-			.then((film)=>{
-				logResult("create results", film);
-
-				filmId = film._id;
-
-				// find
-				callAPI('GET','/api/films/'+filmId, null)
-				.then((film)=>{
-					logResult("find results", film);
-
-					// update rating to 5
-					callAPI('PUT','/api/films/'+filmId, {rating: 5})
-					.then((film)=>{
-						logResult("update results", film);
-
-						// delete
-						callAPI('DELETE', '/api/films/'+filmId, null)
-						.then((result)=>{
-							logResult("delete result", result);
-						 })
-					});
-				});
-			})
-			.catch((err) => {
-				console.log("failed the POST API. Here's the error: " + err);
-			});
-		})*/
 		.catch((err)=>{
 		  console.error(err);
 		});
 	}
-
 	
-
 	async function callAPI(method, uri, body)
 	{
 		jsonMimeType = {
