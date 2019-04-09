@@ -21,7 +21,7 @@ hbs.registerHelper("title", () => {return process.env.APP_NAME;});
 hbs.localsAsTemplateData(app);
 
 // Setup view engine
-// app.use(bodyparser.json({strict: false}));
+app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
