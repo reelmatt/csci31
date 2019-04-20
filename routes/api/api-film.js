@@ -23,87 +23,86 @@ const auth = require('../../controllers/auth');
  *	  Input: req, the form data to include in the update
  *	 Return: Object that mongoose can use to update the database
  */
-function update (req)
-{
-	return {
-		rating: req.body.rating
-	};
+function update(req) {
+    return {
+        rating: req.body.rating
+    };
 }
 
 router.use((req, res, next) => {
-	res.set({
-		// Allow AJAX access from any domain
-		'Access-Control-Allow-Origin':'*',
+    res.set({
+        // Allow AJAX access from any domain
+        'Access-Control-Allow-Origin': '*',
 
-		// Allow methods and headers for 'preflight'
-		'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,OPTIONS',
-		'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers',
-	});
+        // Allow methods and headers for 'preflight'
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers',
+    });
 
-	if(req.method == 'OPTIONS')
-		return res.status(200).end();
+    if (req.method == 'OPTIONS')
+        return res.status(200).end();
 
-	next();
+    next();
 });
 
 //list
 router.get('/', (req, res, next) => {
-	FilmService.list(req.session.user)
-	.then((films) => {
-		res.status(200);
-		res.json(films);
-	})
-	.catch((err) => {
-		res.status(404).end();
-	});
+    FilmService.list(req.session.user)
+        .then((films) => {
+            res.status(200);
+            res.json(films);
+        })
+        .catch((err) => {
+            res.status(404).end();
+        });
 });
 
 //read
 router.get('/:film', (req, res, next) => {
-	FilmService.read(req.params.film)
-	.then((film) => {
-		res.status(200);
-		res.json(film);
-	})
-	.catch((err) => {
-		res.status(404).end();
-	});
+    FilmService.read(req.params.film)
+        .then((film) => {
+            res.status(200);
+            res.json(film);
+        })
+        .catch((err) => {
+            res.status(404).end();
+        });
 });
 
 //create
 router.post('/', (req, res, next) => {
-	FilmService.create(req)
-	.then((addedFilm) => {
-		res.status(201);
-		res.json(addedFilm);
-	})
-	.catch((err) => {
-		res.status(404).end();
-	});
+    FilmService.create(req)
+        .then((addedFilm) => {
+            res.status(201);
+            res.json(addedFilm);
+        })
+        .catch((err) => {
+            res.status(404).end();
+        });
 });
 
 //update
 router.put('/:film', (req, res, next) => {
-	FilmService.update(req.params.film, update(req))
-	.then((updatedFilm) => {
-		res.status(200);
-		res.json(updatedFilm);
-	})
-	.catch((err) => {
-		res.status(404).end();
-	});
+    FilmService.update(req.params.film, update(req))
+        .then((updatedFilm) => {
+            res.status(200);
+            res.json(updatedFilm);
+        })
+        .catch((err) => {
+            res.status(404).end();
+        });
 });
 
 //delete
 router.delete('/:film', (req, res, next) => {
-	FilmService.delete(req.params.film)
-	.then((film) => {
-		res.status(200);
-		res.json(film);
-	})
-	.catch((err) => {
-		res.status(404).end();
-	});
+    FilmService.delete(req.params.film)
+        .then((film) => {
+            res.status(200);
+            res.json(film);
+        })
+        .catch((err) => {
+            res.status(404).end();
+        });
 });
 
 module.exports = router;
