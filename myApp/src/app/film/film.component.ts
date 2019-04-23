@@ -7,26 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FilmComponent implements OnInit {
 
-  // private _title:string;
-
-  // @Input() set title(title:string) {
-  //   this._title = title;
-  // };
-
-  // get title() {
-  //   return this._title;
-  //
-  // }
-
   @Input() film;
 
+  constructor() { }
 
-
-  constructor() {
-    // this.title = " [ no title set ] ";
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }
