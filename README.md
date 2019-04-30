@@ -36,10 +36,10 @@ displaying the page.)
 
 ---
 
-Goal: Rewrite the provided code to correctly fetch and output information from
+**Goal:** Rewrite the provided code to correctly fetch and output information from
 an HTTP request.
 
-Steps:
+**Steps:**
 
 1. Clone this repository to your machine.
 2. Run `npm install` to download the necessary packages.
@@ -53,7 +53,8 @@ Good luck!
 
 ---
 
-Solutions: as a part of *my* assignment requirements, the solutions are
+**Solutions:**
+As a part of *my* assignment requirements, the solutions are
 provided in the same repository, in the `index-solutions.js` file in the
 `routes/` directory. The solutions file contains solutions for a method using
 callbacks and one using promises. To use the solutions, comment out the line
