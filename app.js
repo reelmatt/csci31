@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-// Routers -- Note: only use one or the other (the second contains solutions)
+// Routers -- note: if you have the solutions file, comment out this line
+// and replace it with the line of code provided.
 var indexRouter = require('./routes/index');
-// var indexRouter = require('./routes/index-solutions');
 
 var app = express();
 

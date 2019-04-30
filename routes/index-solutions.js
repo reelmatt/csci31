@@ -11,9 +11,9 @@ router.get('/', function(req, res, next) {
 
 /* 
  *	Display the info from the Vimeo video requested
- *	Note: This solution includes code for both the callback and Promise
- *		  methods. To see both function, and any differences between them,
- *		  comment/un-comment them to run one at a time.
+ *	Note: This solution includes code for the callback method. To see the one
+ *        using promises, comment out the following code and un-comment the
+ *        "router.get()" lines below. 
  */
 router.get('/info', (req, res, next) => {
 
@@ -42,8 +42,16 @@ router.get('/info', (req, res, next) => {
 	
 	console.log("The value of 'callback' is:");
 	console.log(callback);
+})
 
+/* 
+ *	Display the info from the Vimeo video requested
+ *	Note: This solution includes code for the method using promises. To see
+ *        the one using callbacks, comment out the following code and
+ *        un-comment the "router.get()" lines above.
+ */
 /*
+router.get('/info', (req, res, next) => {
 	// Promise method
 	console.log("Promise method...");
 	let promise = getVimeoPromise(req.query.url)
@@ -65,9 +73,8 @@ router.get('/info', (req, res, next) => {
 	console.log(promise);
 	console.log("Note: this is shown *before* the request finishes, despite " + 
 				"appearing later in the code.");
+});
 */
-})
-
 
 /*
  *	getVimeoCallback()
