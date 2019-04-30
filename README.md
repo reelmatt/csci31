@@ -55,8 +55,8 @@ Good luck!
 
 **Solutions:**
 As a part of *my* assignment requirements, the solutions are
-provided in the same repository, in the `index-solutions.js` file in the
-`routes/` directory. The solutions file contains solutions for a method using
+provided in the same repository, in the [`index-solutions.js`](routes/index-solutions.js) file in the
+[`routes/`](routes/) directory. The solutions file contains solutions for a method using
 callbacks and one using promises. To use the solutions, comment out the line
 noted in `app.js` and replace it with the following code:
 
