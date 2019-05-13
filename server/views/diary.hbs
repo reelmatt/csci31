@@ -1,0 +1,18 @@
+{{#if flashMsg}}
+    <p class='error'>Whoops! {{flashMsg}}</p>
+{{/if}}
+{{#if film}}
+	<p>Here are the films you have logged.</p>
+	{{#each film}}
+		<div class='film'>
+			<a href='/films/{{this._id}}'>
+				<img src='{{this.poster}}'>
+				<p>{{this.name}}</p>
+				<p>Your rating: {{this.rating}}</p>
+			</a>
+		</div>
+	{{/each}}
+{{else}}
+	<p>You haven't logged any films yet. Go <a href='/log'>log a film</a> to get
+	started!</p>
+{{/if}}

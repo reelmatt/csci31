@@ -1,0 +1,11 @@
+{{#if flashMsg}}
+    <p class='error'>Whoops! {{flashMsg}}</p>
+{{/if}}
+<h1>Edit info for {{film.name}}</h1>
+<form method='POST' action='/films/{{film._id}}'>
+	<p><label>Rating:
+		<input type='number' name='rating' max='5' min='0' size='5' width='200px' value='{{film.rating}}'>
+	</label></p>
+	<p><input type='submit' value='Update'></p>
+	<input type='hidden' name='_id' value='{{film._id}}'>
+</form>
