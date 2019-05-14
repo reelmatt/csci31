@@ -11,7 +11,7 @@ export class FilmdetailComponent implements OnInit {
   film:any;           //store the film object
   filmurl:string='';  //needed?
   editing:boolean=false;
-
+  title = 'Film Logger';
 
 
   constructor(private route: ActivatedRoute,

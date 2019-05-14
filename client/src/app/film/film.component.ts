@@ -7,8 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FilmComponent implements OnInit {
 
-  @Input() film;
+  title = 'Film Logger';
   
+  @Input() film;
+
   constructor() { }
 
   ngOnInit() {
