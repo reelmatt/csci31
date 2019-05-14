@@ -13,13 +13,12 @@ export class FilmService {
   }
   getFilm(id) {
     return this.http.get(this.apiurl + 'api/films/' + id);
-
   }
 
   deleteFilm(id) {
     return this.http.delete(this.apiurl + 'api/films/' + id);
-
   }
+
   createFilm(filmObject) {
     console.log("In film.service, createfilm()");
     console.log(filmObject);
@@ -28,7 +27,6 @@ export class FilmService {
 
   updateFilm(id, data) {
     return this.http.put(this.apiurl + 'api/films/' + id, data);
-
   }
   constructor(private http: HttpClient) { }
 }
