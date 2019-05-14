@@ -52,6 +52,7 @@ export class FilmdetailComponent implements OnInit {
 
     this.filmService.updateFilm(this.film._id, this.film)
       .subscribe((result) => {
+        this.setEditMode(false);
         this.router.navigate([`films/${this.film._id}`]);
         // location.reload();
       })
