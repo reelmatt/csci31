@@ -32,7 +32,7 @@ export class FilmdetailComponent implements OnInit {
         this.filmService.deleteFilm(this.film._id)
           .subscribe((result) => {
             alert(`Film ${this.film.title} has been deleted.`);
-            this.router.navigate(['/gallery']);
+            this.router.navigate(['']);
           })
     }
 
@@ -52,7 +52,7 @@ export class FilmdetailComponent implements OnInit {
 
     this.filmService.updateFilm(this.film._id, this.film)
       .subscribe((result) => {
-        this.router.navigate(['films/:id']);
+        this.router.navigate([`films/${this.film._id}`]);
         // location.reload();
       })
   }
