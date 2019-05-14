@@ -28,10 +28,10 @@ export class FilmdetailComponent implements OnInit {
   }
 
   deleteFilm():void {
-    if (confirm(`Are you sure you want to delete ${this.film.title}?`)) {
+    if (confirm(`Are you sure you want to delete ${this.film.name}?`)) {
         this.filmService.deleteFilm(this.film._id)
           .subscribe((result) => {
-            alert(`Film ${this.film.title} has been deleted.`);
+            alert(`Film ${this.film.name} has been deleted.`);
             this.router.navigate(['']);
           })
     }
