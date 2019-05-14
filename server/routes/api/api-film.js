@@ -14,9 +14,6 @@ const Film = require('../../models/filmModel');
 const flash = require('connect-flash');
 router.use(flash());
 
-// CONTROLLERS
-const auth = require('../../controllers/auth');
-
 /*
  *	update()
  *	Purpose: create an object to use when updating a database entry

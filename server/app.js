@@ -64,22 +64,11 @@ app.use((req, res, next) => {
  * Setup routers and routes
  ************************************/
 // ROUTERS
-const indexRouter = require('./routes/index');
-const logRouter = require('./routes/log');
-const filmRouter = require('./routes/film');
 const apifilm = require('./routes/api/api-film');
-
 
 // ROUTES
 app.use('/', express.static('../client/dist/FilmLogger-Angular'));
-// app.use('/', indexRouter);
 app.use('/api/films', apifilm);
-// app.use('/about', indexRouter);
-// app.use('/login', indexRouter);
-// app.use('/logout', indexRouter);
-// app.use('/log', logRouter);
-// app.use('/films', filmRouter);
-
 
 /************************************
  * Error handling
