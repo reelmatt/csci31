@@ -13,8 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { NewfilmComponent } from './newfilm/newfilm.component';
 
 const routes: Routes = [
-  // { path: '', redirectTo: '/gallery', pathMatch: 'full'},
-  // { path: 'gallery', component: GalleryComponent },
   { path: '', component: GalleryComponent },
   { path: 'films/:id', component: FilmdetailComponent },
 ]
