@@ -9,6 +9,7 @@ import { FilmService } from '../film.service';
 export class NewfilmComponent implements OnInit {
   //could make a Film class and do film:Film
   film:any = {};  //bound to the form fields b/c of double-binding
+  errorMsg = '';
 
   @Output() newFilm = new EventEmitter();
 
@@ -26,13 +27,20 @@ export class NewfilmComponent implements OnInit {
     console.log("in NewfilmComponent, save()");
     console.log(newfilmForm);
     console.log(this.film);
+    this.errorMsg = '';
 
     this.filmService.createFilm(this.film)
-      .subscribe((film) => {
-        console.log(film);
-        this.newFilm.emit();
-        newfilmForm.reset();
-      });
+        .subscribe((film) => {
+              console.log(film);
+              this.newFilm.emit();
+              newfilmForm.reset();
+            },
+            (err) => {
+              this.errorMsg = 'An error occurred';
+              if (err.status && err.status === 404) {
+                this.errorMsg = `Could not find requested film ${this.film.title}`;
+              }
+            });
 
   }
 
