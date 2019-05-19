@@ -46,7 +46,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser('csci-secret'));
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
 	secret: "csci-secret",
 	resave: "true",
@@ -69,6 +69,11 @@ const apifilm = require('./routes/api/api-film');
 // ROUTES
 app.use('/', express.static('../client/dist/FilmLogger-Angular'));
 app.use('/api/films', apifilm);
+app.get("/*", (req, res) => {
+	res.sendFile("index.html", {
+		root: "../client/dist/FilmLogger-Angular"
+	});
+});
 
 /************************************
  * Error handling
