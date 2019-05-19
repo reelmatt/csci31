@@ -4,7 +4,7 @@ Very nice work, Matthew. Just a few notes for you consider:
 
 ### Asynchronous behavior
 
-This is subtle, but it's worth noting. When your Angular filmdetail component first renders, the film record may not yet have arrived from the API call, resulting in an error trace popping up in the client log. Eventually the record does return and the user experience is fine, but if you want to prevent the log from reporting these transient errors, you can wrap the markup rendering the details record in an *ngIf guard. I've made this change to **film.component.html** and committed it to your repo.
+This is subtle, but it's worth noting. When your Angular filmdetail component first renders, the film record may not yet have arrived from the API call, resulting in an error trace popping up in the client log. Eventually the record does return and the user experience is fine, but if you want to prevent the log from reporting these transient errors, you can wrap the markup rendering the details record in an _*ngIf_ guard. I've made this change to **film.component.html** and committed it to your repo.
 
 ### Error handling
 
