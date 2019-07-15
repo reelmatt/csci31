@@ -1,0 +1,129 @@
+<html>
+<head>
+  <title>API Test File</title>
+  <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+          integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+          crossorigin="anonymous"></script>
+  <script>
+      "use strict";
+
+      let api = "http://localhost:3000/api/films"
+
+      $.when($.ready).then(() => {
+          console.log("running");
+          // List records
+          $.ajax({url: api})
+              .done((resp) => {
+                  $("#listResponse").text(`Success: Found ${resp.length} films`);
+                  // Insert record
+                  $.ajax({
+                      url: api,
+                      method: 'POST',
+                      data: {"title": "Patton"}
+                  }).done((resp) => {
+                      console.log(resp);
+                      $("#createResponse").text(`Success: Created record with id ${resp._id}`);
+                      let recordId = resp._id;
+                      // Retrieve record
+                      $.ajax({
+                          url: `${api}/${recordId}`
+                      }).done((resp) => {
+                          console.log(resp);
+                          console.log(`Retrieved record: ${recordId == resp._id}`);
+                          $("#retrieveResponse").text(`Success: Retrieved record by lookup on id ${recordId}`);
+                          // Update record
+                          $.ajax({
+                              url: `${api}/${recordId}`,
+                              method: 'PUT',
+                              data: {"rating": 4}
+                          }).done((resp) => {
+                              console.log(resp);
+                              console.log("Called update");
+                              // Confirm that we got the changed value back
+                              let message = resp.rating == 4
+                                  ? "Success: Updated record"
+                                  : "Failure: Unexpected value reported for account salary property";
+                              $("#updateResponse").text(message);
+                              //Delete record
+                              $.ajax({
+                                  url: `${api}/${recordId}`,
+                                  method: 'DELETE'
+                              }).done((resp) => {
+                                  console.log(resp);
+                                  $("#deleteResponse").text("Success: record deleted");
+                                  console.log("Confirming deletion");
+                                  $.ajax({url: api})
+                                      .done((resp) => {
+                                          console.log(resp);
+                                          // Verify the record is gone
+                                          let message = !(resp.find((el) => el._id == recordId))
+                                              ? "Success: record does not appear in listing"
+                                              : "Failure: record still appears in listing";
+                                          $("#deleteConfirmResponse").text(message);
+                                          // Error handling test
+                                          $.ajax({url: `${api}/error`})
+                                              .catch((err) => {
+                                                  console.error(err);
+                                                  $("#errorHandlingResponse").text(`Error handled: status ${err.status}`);
+                                              })
+                                      })
+                                      .catch((err) => {
+                                          console.error(err.message);
+                                          $("#deleteConfirmResponse").text("Failure");
+                                      })
+                              })
+                          }).catch((err) => {
+                              console.error(err);
+                              $("#updateResponse").text("Failure");
+                          })
+                      }).catch((err) => {
+                          console.error(err);
+                          $("#retrieveResposne").text("Failure");
+                      });
+                  }).catch((err) => {
+                      console.error(err);
+                      $("#createResponse").text("Failure");
+                  })
+              }).catch((err) => {
+              console.error(err);
+              $("#listResponse").text("Failure");
+          })
+      });
+
+  </script>
+</head>
+<body>
+  <h1>API Test Results</h1>
+  <table>
+    <tr>
+      <td>List Records</td>
+      <td><span id="listResponse"></span></td>
+    </tr>
+    <tr>
+      <td>Create Record</td>
+      <td id="createResponse"></td>
+    </tr>
+    <tr>
+      <td>Retrieve Record</td>
+      <td id="retrieveResponse"></td>
+    </tr>
+    <tr>
+      <td>Update Record</td>
+      <td id="updateResponse"></td>
+    </tr>
+    <tr>
+      <td>Delete Record</td>
+      <td id="deleteResponse"></td>
+    </tr>
+    <tr>
+      <td>Confirm Record Deletion</td>
+      <td id="deleteConfirmResponse"></td>
+    </tr>
+    <tr>
+      <td>Error Handling</td>
+      <td id="errorHandlingResponse"></td>
+    </tr>
+  </table>
+
+</body>
+</html>
