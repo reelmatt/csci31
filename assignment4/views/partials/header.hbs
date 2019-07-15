@@ -1,0 +1,15 @@
+<header>
+    <h1 class=''><a href='/' class='foobar'>{{title}}</a></h1>
+    <nav>
+        <ul>
+			<li><a href="/about">About</a></li>
+			{{#if user}}
+				<li><a href="/log">Log Film</a></li>
+				<li><a href="/films">Diary</a></li>
+				<li><a href="/logout">Logout</a></li>
+			{{else}}
+				<li><a href="/login">Login</a></li>
+			{{/if}}
+        </ul>
+    </nav>
+</header>
