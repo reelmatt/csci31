@@ -1,0 +1,11 @@
+<h1>
+  Welcome to {{ title }}!
+</h1>
+<p>Right now, this site pulls in a list of all films from the main
+  <a href="http://167.99.149.212:8080/">Film Logger site</a>. Over there, you
+  can add, update, and delete films. Those changes should be reflected back here.
+</p>
+<p>More functionality is forthcoming for this site. Stay tuned for assignment 7!</p>
+<app-film *ngFor='let filmObject of filmList' [film]="filmObject"></app-film>
+
+<router-outlet></router-outlet>
