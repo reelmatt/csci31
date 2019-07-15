@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+<p>Enter a URL to a Vimeo video below, and click 'Get Info' to see more information
+	about it!</p>
+<p>If you want one to test, try <a href="https://vimeo.com/265045525"> https://vimeo.com/265045525</a>.</p>
+
+ <form method='GET' action='/info'>
+	<p><label>Video URL:
+		<input type='text' name='url' required>
+	</label> *required</p>
+	<p><input type='submit' value='Get Info'></p>
+</form>

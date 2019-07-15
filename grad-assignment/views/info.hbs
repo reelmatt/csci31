@@ -1,0 +1,11 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+
+{{#if video}}
+	<h2>{{video.title}}</h2>
+	<p>Duration: {{video.duration}} seconds</p>
+	<p>Description: {{video.description}}</p>
+{{else}}
+	<p>Oops! The video you requested was not found. <a href="/">Go back</a>
+		and try again.</p>
+{{/if}}
