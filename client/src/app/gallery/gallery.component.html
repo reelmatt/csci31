@@ -1,0 +1,11 @@
+<h1>
+  Welcome to {{ title }}!
+</h1>
+<p>Use the form below to enter the name a film you would like to log, and a rating
+  from 1 to 5 of how much you enjoyed the film. The film will then appear among all
+  the others that people have logged.</p>
+<p>To view more details, or to change your rating, click on an individual film to be
+  taken to another page where you can make those changes!</p>
+<app-newfilm (newFilm)="updateFilmList()"></app-newfilm>
+<br/>
+<app-film *ngFor='let filmObject of filmList' [film]="filmObject"></app-film>

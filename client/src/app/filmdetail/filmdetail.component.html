@@ -1,0 +1,27 @@
+<h1>
+  Welcome to {{ title }}!
+</h1>
+<div *ngIf="film" class='film'>
+    <a routerLink='/films/{{film._id}}'>
+      <img src='{{film.poster}}'></a>
+      <p>{{film.name}}</p>
+      <p>Your rating (1-5 stars): {{film.rating}}</p>
+      <p>MPAA rating: {{film.mpaa}}</p>
+      <p>Release date: {{film.year}}</p>
+      <p>Plot: {{film.plot}}</p>
+    <button (click)="setEditMode(true)">Edit</button>
+</div>
+<p><a href="/">Go home!</a></p>
+
+<div *ngIf="editing">
+  <form #form="ngForm" (ngSubmit)="updateFilm(form.value)" action='films/{{film._id}}'>
+  	<p><label>Rating:
+  		<input #rating type='number' name='rating' max='5' min='0' size='5' width='200px' value='{{film.rating}}' [ngModel]="film.rating">
+  	</label></p>
+
+    <button type="submit">Update</button>
+    <button type="button" (click)="setEditMode(false)">Cancel</button>
+    <button type="button" (click)="deleteFilm()">Delete</button>
+  	<input type='hidden' name='_id' value='{{film._id}}'>
+  </form>
+</div>

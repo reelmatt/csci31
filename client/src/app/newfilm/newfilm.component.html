@@ -1,0 +1,17 @@
+
+<form #newfilmForm="ngForm" (ngSubmit)="save(newfilmForm)">
+<!-- <form method='POST' action='/log'> -->
+	<p><label>Film:
+		<input type='text' #title="ngModel" name='title' required [(ngModel)]="film.title">
+	</label> *required</p>
+  <div *ngIf="title.invalid && (title.dirty || title.touched)">
+    <div *ngIf="title.errors.required">
+        The title is required!
+    </div>
+  </div>
+	<p><label>Rating:
+		<input type='number' name='rating' max='5' min='0' size='5' width='200px' [(ngModel)]="film.rating">
+	</label></p>
+	<p><input type='submit' [disabled]="!newfilmForm.valid" value='Log Film'></p>
+	<p *ngIf="errorMsg">{{errorMsg}}</p>
+</form>
