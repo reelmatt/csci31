@@ -1,0 +1,23 @@
+<header>
+    <h1><a href='/'>{{title}}</a></h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/films">Logged films</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class='poster'>
+    <a href='http://imdb.com/title/{{omdb.imdbID}}'><img src='{{omdb.Poster}}'></a>
+</div>
+<div class='movie_info'>
+    <h1>{{omdb.Title}}</h1>
+    <p>Plot: {{omdb.Plot}}</p>
+    <p>Cast: {{omdb.Actors}}</p>
+    <p>MPAA Rating: {{omdb.Rated}}</p>
+    {{#if userfilms.rating}}
+        <p>Your rating: {{userfilms.rating}} out of 5 stars</p>
+    {{/if}}
+</div>

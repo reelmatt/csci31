@@ -1,0 +1,32 @@
+<header>
+    <h1><a href='/'>{{title}}</a></h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/films">Logged films</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+{{#if userfilms}}
+	<p>Here are the films you have logged.</p>
+	{{#each userfilms}}
+		<p><a href='/films/{{this.id}}'>{{this.title}}</a></p>
+	{{/each}}
+{{else}}
+	<p>You haven't logged any films yet. Go <a href='/'>to the home page</a> and fill out the form to get started!</p>
+{{/if}}
+
+<div class='default'>
+    <p>Cannot think of any films? Here are five popular options to help you get started. Select one you want to learn about and click the "See more!" button.</p>
+    <form method='GET' action='/films'>
+        <label>List of popular films:
+            <select name='title'>
+                {{#each films}}
+                    <option value='{{this.title}}' name='title'>{{this.title}}</option>
+                {{/each}}
+            </select>
+        </label><input type='submit' value='See more!'>
+    </form>
+</div>
