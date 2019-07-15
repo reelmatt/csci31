@@ -1,0 +1,27 @@
+body {
+  margin: auto;
+  font-family: verdana, helvetica, sans-serif;
+  text-align: center;
+  width: 100%;
+}
+
+p {
+  width: 50%;
+  margin: auto;
+}
+
+img {
+  width: 30%;
+}
+
+.quote {
+  font-family: georgia, serif;
+  color: gray;
+  font-size: 1.25em;
+}
+
+.person {
+  color: gray;
+  font-variant: small-caps;
+  padding: .5em;
+}
